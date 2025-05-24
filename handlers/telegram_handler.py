@@ -92,11 +92,11 @@ class TelegramBot:
         welcome_message = f"""
 🌱🌱 Добро пожаловать в PlantMama AI, {user.first_name}!
 
-I'm your personal plant care assistant. I can help you:
-• 🔍 Diagnose plant diseases from photos
-• 🌿 Identify unknown plants
-• 💚 Provide personalized care advice
-• 📅 Set up care reminders
+Я — твой персональный помощник по уходу за растениями. Я могу помочь тебе:
+• 🔍 Определить болезни растений по фото
+• 🌿 Опознать неизвестные растения
+• 💚 Дать персональные советы по уходу
+• 📅 Настроить напоминания по уходу
 
 Just send me a photo of your plant or ask me any plant-related question!
 
