@@ -16,9 +16,9 @@ git add .
 git commit -m "Initial commit: Project structure with To-Do List and .gitignore"
 
 # Optional: Set up remote repository
-# git remote add origin <your-repository-url>
-# git branch -M main
-# git push -u origin main
+git remote add origin https://github.com/hbs-1991/PlantMama.git
+git branch -M main
+git push -u origin main
 ```
 
 ## Repository Structure
