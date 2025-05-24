@@ -33,7 +33,7 @@ class Settings(BaseSettings):
     OPENAI_MODEL: str = Field(default="gpt-4.1-mini")
     
     # Telegram
-    TELEGRAM_BOT_TOKEN: str = Field(...)
+    TELEGRAM_BOT_TOKEN: str = Field(os.getenv("TELEGRAM_BOT_TOKEN"))
     TELEGRAM_WEBHOOK_URL: Optional[str] = Field(default=None)
     
     # Database
