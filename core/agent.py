@@ -119,7 +119,9 @@ class PlantCareAgent:
             )
             
             # Extract the final message
-            final_message = response.messages[-1].content if response.messages else "I'm sorry, I couldn't process your request."
+            final_message = response.messages[-1].content if response.messages else ("Извините, я не смог обработать ваш запрос."
+                                                                                     "Пожалуйста, попробуйте ещё раз — например, отправьте фото растения или уточните, "
+                                                                                     "в чём нужна помощь. Я здесь, чтобы помочь! 🌿.")
             
             logger.info(f"Successfully processed message for user {user_id}")
             return final_message
