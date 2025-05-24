@@ -90,7 +90,7 @@ class TelegramBot:
         """Handle /start command."""
         user = update.effective_user
         welcome_message = f"""
-🌱 Welcome to PlantMama AI, {user.first_name}!
+🌱🌱 Добро пожаловать в PlantMama AI, {user.first_name}!
 
 I'm your personal plant care assistant. I can help you:
 • 🔍 Diagnose plant diseases from photos
