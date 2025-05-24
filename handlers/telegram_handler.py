@@ -100,7 +100,7 @@ class TelegramBot:
 
 Просто отправь мне фото своего растения или задай любой вопрос, связанный с растениями!
 
-Use /help to see all available commands.
+Используй /help, чтобы увидеть все доступные команды.
         """
         await update.message.reply_text(welcome_message)
     
