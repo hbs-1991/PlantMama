@@ -109,7 +109,7 @@ class TelegramBot:
     ) -> None:
         """Handle /help command."""
         help_text = """
-📚 **PlantMama AI Help**
+📚 **PlantMama AI — Справка**
 
 **Команды:**
 /start — Запустить бота
