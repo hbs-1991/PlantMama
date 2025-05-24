@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     )
     
     # Application
-    APP_NAME: str = "PlantCare Agent"
+    APP_NAME: str = "PlantMama AI Agent"
     VERSION: str = "0.1.0"
     DEBUG: bool = Field(default=False)
     ENVIRONMENT: str = Field(default="production")
