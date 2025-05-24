@@ -1,0 +1,42 @@
+# Core dependencies
+openai-agents
+python-telegram-bot
+Pillow
+SQLAlchemy
+python-dotenv
+pydantic
+asyncio-mqtt
+
+# Database
+alembic
+asyncpg
+psycopg2-binary
+
+# OpenAI and related
+openai
+typing-extensions
+requests
+
+# Logging and monitoring
+structlog
+python-json-logger
+
+# Development tools
+black
+flake8
+mypy
+pytest
+pytest-asyncio
+pytest-cov
+pytest-mock
+
+# Optional: For better async support
+aiofiles
+aiohttp
+
+# Optional: For image processing enhancements
+numpy
+opencv-python
+
+# Optional: For rate limiting
+aioredis
