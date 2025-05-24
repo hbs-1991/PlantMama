@@ -83,7 +83,7 @@ class ImageProcessor:
         try:
             image = Image.open(io.BytesIO(image_data))
             
-            # Convert to numpy array
+            # Convert to a numpy array
             img_array = np.array(image)
             
             # Basic feature extraction
