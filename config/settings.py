@@ -29,8 +29,8 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = Field(default="INFO")
     
     # OpenAI
-    OPENAI_API_KEY: str = Field(...)
-    OPENAI_MODEL: str = Field(default="gpt-4o-mini")
+    OPENAI_API_KEY: str = Field(os.getenv("OPENAI_API_KEY"))
+    OPENAI_MODEL: str = Field(default="gpt-4.1-mini")
     
     # Telegram
     TELEGRAM_BOT_TOKEN: str = Field(...)
