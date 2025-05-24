@@ -126,10 +126,10 @@ class TelegramBot:
 • "How often should I water my succulents?"
 • "What fertilizer is best for orchids?"
 
-**Tips:**
-• For best results, send clear photos in good lighting
-• Include details about your plant's environment
-• Feel free to ask follow-up questions!
+**Советы:**
+• Для лучшего результата присылайте чёткие фото при хорошем освещении
+• Указывайте детали об окружающей среде растения
+• Не стесняйтесь задавать уточняющие вопросы!
         """
         await update.message.reply_text(help_text, parse_mode="Markdown")
     
