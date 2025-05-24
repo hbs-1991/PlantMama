@@ -115,7 +115,7 @@ class ImageProcessor:
     
     @staticmethod
     def _calculate_green_ratio(img_array: np.ndarray) -> float:
-        """Calculate ratio of green pixels in image."""
+        """Calculate the ratio of green pixels in image."""
         if len(img_array.shape) != 3 or img_array.shape[2] != 3:
             return 0.0
         
