@@ -1,6 +1,10 @@
 """Plant diagnosis tools."""
 
-from typing import Dict, Optional
+import base64
+import logging
+import re
+import json
+from typing import Dict, Optional, List
 
 from agents import tool
 from pydantic import BaseModel, Field
