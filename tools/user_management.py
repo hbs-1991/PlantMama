@@ -7,6 +7,8 @@ from typing import List, Optional, Dict
 
 from agents import tool
 from pydantic import BaseModel, Field
+from sqlalchemy import select, desc
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger_name = "user_management"
 # Можно добавить логгер, если потребуется: logging.getLogger(logger_name)
