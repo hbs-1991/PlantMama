@@ -105,19 +105,63 @@ async def diagnose_plant_photo(
 @tool
 async def identify_plant_species(image_data: bytes) -> PlantIdentification:
     """
-    Identify plant species from an image.
-    
-    Args:
-        image_data: Raw image bytes
-        
-    Returns:
-        Plant identification results
+    Инструмент для идентификации вида растения по фотографии.
+    LLM должен вернуть строго JSON:
+    {
+    "species": "<название вида>",
+      "common_name": "<распространенное название>",
+      "scientific_name": "<латинское название>",
+      "confidence": <число 0-1>,
+      "alternatives": ["вариант1", "вариант2", ...]
+    }
     """
-    # Placeholder implementation
-    return PlantIdentification(
-        species="Monstera deliciosa",
-        common_name="Swiss Cheese Plant",
-        scientific_name="Monstera deliciosa",
-        confidence=0.92,
-        alternatives=["Monstera adansonii", "Philodendron"],
+    client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
+
+    b64 = base64.b64encode(image_data).decode("utf-8")
+    image_str = f"data:image/jpeg;base64,{b64}"
+
+    system_prompt = (
+        "Ты — эксперт по ботанике. "
+        "Твоя задача — по изображению растения определить вид и вернуть JSON.\n"
+        "Формат JSON:\n"
+        "  - species: строка (название вида),\n"
+        "  - common_name: строка (распространенное название),\n"
+        "  - scientific_name: строка (латинское название),\n"
+        "  - confidence: число от 0 до 1,\n"
+        "  - alternatives: массив строк (альтернативные близкие виды).\n"
+        "Никакого другого текста — только JSON."
     )
+
+    user_prompt = (
+        f"Вот изображение растения:\n{image_str}\n\n"
+        "Определи вид и верни JSON."
+    )
+
+    try:
+        response = await client.chat.completions.create(
+            model="gpt-4-vision-preview",
+            temperature=0.2,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            max_tokens=600,
+        )
+
+        ident_text = response.choices[0].message.content.strip()
+        logger.info(f"Raw identify response: {ident_text}")
+
+        data = json.loads(ident_text)
+        result = PlantIdentification.parse_obj(data)
+        return result
+
+    except Exception as exc:
+        logger.error(f"Ошибка identify_plant_species: {exc}", exc_info=True)
+        # Пустая заглушка
+        return PlantIdentification(
+            species="Неизвестно",
+            common_name="Неизвестно",
+            scientific_name="Неизвестно",
+            confidence=0.0,
+            alternatives=[],
+        )
