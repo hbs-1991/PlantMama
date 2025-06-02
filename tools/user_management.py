@@ -6,6 +6,10 @@ from typing import List, Optional
 from agents import tool
 from pydantic import BaseModel, Field
 
+logger_name = "user_management"
+# Можно добавить логгер, если потребуется: logging.getLogger(logger_name)
+# Но пока оставим без явного логгера.
+
 
 class SessionData(BaseModel):
     session_id: str = Field(description="Уникальный идентификатор сессии")
