@@ -48,6 +48,8 @@ class PlantCareAgent:
             generate_care_instructions,
             recommend_fertilizers,
             recommend_tools,
+            get_plant_encyclopedia,
+            calculate_watering_schedule,
             save_user_session,
             get_user_plant_history,
             schedule_reminder,
