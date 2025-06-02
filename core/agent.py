@@ -11,6 +11,10 @@ from tools.care_recommendations import (
     recommend_fertilizers,
     recommend_tools,
 )
+from tools.plant_encyclopedia import (
+    get_plant_encyclopedia,
+    calculate_watering_schedule,
+)
 from tools.user_management import (
     save_user_session,
     get_user_plant_history,
