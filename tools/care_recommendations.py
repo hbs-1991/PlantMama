@@ -45,29 +45,65 @@ async def generate_care_instructions(
     season: str,
 ) -> CareInstructions:
     """
-    Generate personalized care instructions based on plant type and diagnosis.
-    
-    Args:
-        plant_id: Plant identifier or species
-        diagnosis: Diagnosis results
-        season: Current season
-        
-    Returns:
-        Detailed care instructions
+    Инструмент для генерации рекомендаций по уходу на основе диагноза и сезона.
+    Возвращаемый JSON строго в формате:
+    {
+      "watering": "<строка>",
+      "lighting": "<строка>",
+      "soil": "<строка>",
+      "seasonal_tips": ["<строка1>", "<строка2>", ...]
+    }
     """
-    # Placeholder implementation
-    return CareInstructions(
-        watering="Water when top 2 inches of soil are dry (approximately twice a week)",
-        lighting="Bright, indirect light. Avoid direct sunlight.",
-        temperature="65-80°F (18-27°C)",
-        humidity="50-60% humidity preferred",
-        soil="Well-draining potting mix with perlite",
-        seasonal_tips=[
-            "Reduce watering frequency in winter",
-            "Increase humidity with a pebble tray",
-            "Fertilize monthly during growing season",
-        ],
+    client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
+
+    # Подготавливаем JSON-строку с диагнозом для LLM
+    diag_json = json.dumps(diagnosis, ensure_ascii=False)
+
+    system_prompt = (
+        "Ты — эксперт по уходу за растениями. "
+        "Тебе дан диагноз в формате JSON и текущее время года. "
+        "Верни строго JSON с ключами: watering, lighting, soil, seasonal_tips.\n"
+        "Пример:\n"
+        "{\n"
+        '  "watering": "Полив раз в 5 дней...",\n'
+        '  "lighting": "Нужен рассеянный свет...",\n'
+        '  "soil": "Рекомендуется плодородная, питательная почва...",\n'
+        '  "seasonal_tips": ["Совет 1", "Совет 2"]\n'
+        "}\n"
+        "Никакого дополнительного текста."
     )
+
+    user_prompt = (
+        f"Диагноз:\n{diag_json}\nСезон: {season}.\n\n"
+        "Сформируй рекомендации по уходу строго в формате JSON."
+    )
+
+    try:
+        response = await client.chat.completions.create(
+            model="gpt-4",
+            temperature=0.3,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            max_tokens=700,
+        )
+
+        instructions_text = response.choices[0].message.content.strip()
+        logger.info(f"Raw care instructions response: {instructions_text}")
+
+        data = json.loads(instructions_text)
+        return CareInstructions.parse_obj(data)
+
+    except Exception as exc:
+        logger.error(f"Ошибка generate_care_instructions: {exc}", exc_info=True)
+        # Возвращаем «пустые» рекомендации
+        return CareInstructions(
+            watering="Не удалось сгенерировать рекомендации по поливу.",
+            lighting="Не удалось сгенерировать рекомендации по освещению.",
+            soil="Не удалось сгенерировать рекомендации по почве.",
+            seasonal_tips=["Не удалось сгенерировать сезонные советы."],
+        )
 
 
 @tool
