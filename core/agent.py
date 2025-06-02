@@ -3,7 +3,7 @@
 import logging
 from typing import Optional
 
-from agents import Agent, RunConfig, ToolResult
+from agents import Agent, RunConfig
 from openai import AsyncOpenAI
 
 from config.settings import settings
