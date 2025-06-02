@@ -8,6 +8,11 @@ from typing import Dict, Optional, List
 
 from agents import tool
 from pydantic import BaseModel, Field
+from openai import AsyncOpenAI
+
+from config.settings import settings
+
+logger = logging.getLogger(__name__)
 
 
 class DiagnosisResult(BaseModel):
