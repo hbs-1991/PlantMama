@@ -39,23 +39,24 @@ class PlantCareAgent:
             "5. В каждом ответе стремись быть максимально понятным и полезным, не выходя за рамки упомянутых инструментов."
         )
 
-При анализе фото растений отвечай подробно, но кратко. Всегда давай чёткие и конкретные рекомендации по дальнейшим действиям.
-"""
-        
-        # Initialize agent with tools
+        # Регистрируем все доступные инструменты
+        tools = [
+            diagnose_plant_photo,
+            identify_plant_species,
+            generate_care_instructions,
+            recommend_fertilizers,
+            recommend_tools,
+            save_user_session,
+            get_user_plant_history,
+            schedule_reminder,
+        ]
+
+        # Создаём агента, передавая в него наш AsyncOpenAI
         self.agent = Agent(
             name="PlantCare Agent",
+            llm=self.client,
             instructions=self.system_prompt,
-            tools=[
-                diagnose_plant_photo,
-                identify_plant_species,
-                generate_care_instructions,
-                recommend_fertilizers,
-                recommend_tools,
-                save_user_session,
-                get_user_plant_history,
-                schedule_reminder,
-            ],
+            tools=tools,
         )
         
         logger.info("PlantCare Agent initialized successfully")
