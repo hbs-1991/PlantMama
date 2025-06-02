@@ -53,13 +53,7 @@ async def save_user_session(user_id: str, session_data: SessionData) -> None:
 @tool
 async def get_user_plant_history(user_id: str) -> List[PlantRecord]:
     """
-    Retrieve user's plant history and records.
-    
-    Args:
-        user_id: User identifier
-        
-    Returns:
-        List of plant records
+    Заглушка для получения истории растений пользователя.
     """
     # В продакшене тут запрос к БД.
     now = datetime.now()
