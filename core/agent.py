@@ -64,7 +64,6 @@ class PlantCareAgent:
         user_id: str,
         message: str,
         image_data: Optional[bytes] = None,
-        context: Optional[dict] = None,
     ) -> str:
         """
         Основной метод: принимает ID пользователя, текстовое сообщение и (опционально) raw-данные изображения.
