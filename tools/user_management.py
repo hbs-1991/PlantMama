@@ -97,8 +97,9 @@ async def calculate_watering_schedule_user(
     Альтернативная версия расчёта расписания полива в модуле user_management.
     Если он не нужен, можно удалить этот метод.
     """
-    # Placeholder implementation
-    return WateringSchedule(
+    now = datetime.now()
+    # Делаем грубую заглушку: полив раз в 7 дней по 200 мл
+    return WateringScheduleUser(
         frequency_days=7,
         amount_ml=200,
         next_watering=datetime.now(),
