@@ -41,7 +41,7 @@ class ToolRecommendation(BaseModel):
 @tool
 async def generate_care_instructions(
     plant_id: str,
-    diagnosis: dict,
+    diagnosis: Dict,
     season: str,
 ) -> CareInstructions:
     """
