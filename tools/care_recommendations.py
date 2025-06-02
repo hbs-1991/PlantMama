@@ -29,13 +29,11 @@ class FertilizerRecommendation(BaseModel):
 
 
 class ToolRecommendation(BaseModel):
-    """Gardening tool recommendation."""
-    
-    tool_name: str = Field(description="Tool name")
-    purpose: str = Field(description="What it's used for")
-    price_range: str = Field(description="Price range")
-    brand_suggestions: List[str] = Field(description="Recommended brands")
-    purchase_links: List[str] = Field(description="Where to buy")
+    name: str = Field(description="Название инструмента")
+    purpose: str = Field(description="Назначение")
+    price_range: str = Field(description="Диапазон цен")
+    brand: str = Field(description="Рекомендуемый бренд")
+    purchase_links: List[str] = Field(description="Где купить (общие магазины, без конкретных URL)")
 
 
 @tool
