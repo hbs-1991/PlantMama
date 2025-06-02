@@ -61,6 +61,7 @@ class PlantCareAgent:
 
     async def process_message(
         self,
+        user_id: str,
         message: str,
         user_id: str,
         image_data: Optional[bytes] = None,
