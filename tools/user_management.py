@@ -92,7 +92,7 @@ async def calculate_watering_schedule_user(
     plant_id: str,
     pot_size: str,
     humidity: float,
-) -> WateringSchedule:
+) -> WateringScheduleUser:
     """
     Calculate optimal watering schedule.
     
