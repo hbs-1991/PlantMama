@@ -1,5 +1,9 @@
-from datetime import datetime
-from typing import List, Optional
+"""User management tools."""
+
+import json
+import logging
+from datetime import datetime, timedelta
+from typing import List, Optional, Dict
 
 from agents import tool
 from pydantic import BaseModel, Field
