@@ -41,11 +41,14 @@ class PlantRecord(BaseModel):
     care_notes: Optional[str] = Field(description="Care notes")
 
 
-class WateringScheduleUser(BaseModel):
-    frequency_days: int = Field(description="Интервал полива (в днях)")
-    amount_ml: int = Field(description="Количество воды (в мл)")
-    next_watering: datetime = Field(description="Дата/время следующего полива")
-    indicators: List[str] = Field(description="Признаки, указывающие на необходимость полива")
+class ReminderInfo(BaseModel):
+    """Reminder information."""
+    
+    reminder_id: str = Field(description="Unique reminder ID")
+    reminder_type: str = Field(description="Type of reminder")
+    scheduled_time: datetime = Field(description="When reminder is scheduled")
+    plant_name: Optional[str] = Field(description="Associated plant name")
+    status: str = Field(description="Reminder status")
 
 
 @tool
