@@ -24,13 +24,11 @@ class DiagnosisResult(BaseModel):
 
 
 class PlantIdentification(BaseModel):
-    """Plant identification result."""
-    
-    species: str = Field(description="Identified plant species")
-    common_name: str = Field(description="Common name")
-    scientific_name: str = Field(description="Scientific name")
-    confidence: float = Field(description="Confidence score (0-1)")
-    alternatives: list[str] = Field(description="Alternative species if uncertain")
+    species: str = Field(description="Название вида/таксона (вида)")
+    common_name: str = Field(description="Распространенное название")
+    scientific_name: str = Field(description="Научное латинское название")
+    confidence: float = Field(description="Достоверность идентификации (0-1)")
+    alternatives: List[str] = Field(description="Альтернативные варианты вида")
 
 
 @tool
