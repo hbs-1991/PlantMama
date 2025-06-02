@@ -23,20 +23,8 @@ logger = logging.getLogger(__name__)
 
 
 class PlantCareAgent:
-    """Main PlantCare AI Agent."""
-    
-    def __init__(self, api_key: Optional[str] = None, model: Optional[str] = None):
-        """
-        Initialize the PlantCare Agent.
-        
-        Args:
-            api_key: OpenAI API key
-            model: Model to use (default from settings)
-        """
-        self.api_key = api_key or settings.OPENAI_API_KEY
-        self.model = model or settings.OPENAI_MODEL
-        
-        # Initialize OpenAI client
+    def __init__(self):
+        self.api_key = settings.OPENAI_API_KEY
         self.client = AsyncOpenAI(api_key=self.api_key)
 
         # Системное описание бота (на русском)
