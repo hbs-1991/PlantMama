@@ -10,9 +10,11 @@ from pydantic import BaseModel, Field
 from sqlalchemy import select, desc
 from sqlalchemy.ext.asyncio import AsyncSession
 
-logger_name = "user_management"
-# Можно добавить логгер, если потребуется: logging.getLogger(logger_name)
-# Но пока оставим без явного логгера.
+from config.settings import settings
+from database.connection import get_db_session
+from database.models import User, Plant, Session, Message, Diagnosis, Reminder
+
+logger = logging.getLogger(__name__)
 
 
 class SessionData(BaseModel):
