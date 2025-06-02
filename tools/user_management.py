@@ -88,7 +88,7 @@ async def schedule_reminder(
 
 
 @tool
-async def calculate_watering_schedule(
+async def calculate_watering_schedule_user(
     plant_id: str,
     pot_size: str,
     humidity: float,
