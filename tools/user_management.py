@@ -94,15 +94,8 @@ async def calculate_watering_schedule_user(
     humidity: float,
 ) -> WateringScheduleUser:
     """
-    Calculate optimal watering schedule.
-    
-    Args:
-        plant_id: Plant identifier
-        pot_size: Size of pot (small/medium/large)
-        humidity: Current humidity level
-        
-    Returns:
-        Watering schedule details
+    Альтернативная версия расчёта расписания полива в модуле user_management.
+    Если он не нужен, можно удалить этот метод.
     """
     # Placeholder implementation
     return WateringSchedule(
