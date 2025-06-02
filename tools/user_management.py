@@ -46,9 +46,8 @@ async def save_user_session(user_id: str, session_data: SessionData) -> None:
         user_id: User identifier
         session_data: Session data to save
     """
-    # Placeholder implementation
-    # In production, this would save to a database
-    pass
+    # Здесь код для сохранения session_data в вашу БД
+    return None
 
 
 @tool
