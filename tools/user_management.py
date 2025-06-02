@@ -18,14 +18,10 @@ class SessionData(BaseModel):
 
 
 class PlantRecord(BaseModel):
-    """User's plant record."""
-    
-    plant_id: str
-    species: str
-    nickname: Optional[str]
-    added_date: datetime
-    last_diagnosis: Optional[datetime]
-    health_history: List[dict]
+    plant_id: str = Field(description="ID растения в базе")
+    added_date: datetime = Field(description="Дата добавления растения")
+    last_diagnosis: datetime = Field(description="Дата последней диагностики")
+    health_history: List[dict] = Field(description="История изменений здоровья (дата + значение)")
 
 
 class WateringScheduleUser(BaseModel):
