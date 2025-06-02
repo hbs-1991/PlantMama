@@ -60,8 +60,53 @@ async def save_user_session(user_id: str, session_data: SessionData) -> None:
         user_id: User identifier (telegram ID)
         session_data: Session data to save
     """
-    # Здесь код для сохранения session_data в вашу БД
-    return None
+    try:
+        async with get_db_session() as db:
+            # Check if user exists, create if not
+            user = await db.get(User, user_id)
+            if not user:
+                user = User(
+                    telegram_id=user_id,
+                    created_at=datetime.utcnow()
+                )
+                db.add(user)
+                await db.flush()
+            
+            # Create or update session
+            session = await db.get(Session, session_data.session_id)
+            if not session:
+                session = Session(
+                    id=session_data.session_id,
+                    user_id=user.id,
+                    start_time=session_data.start_time,
+                    messages_count=len(session_data.messages),
+                    tokens_used=session_data.tokens_used
+                )
+                db.add(session)
+            else:
+                session.messages_count = len(session_data.messages)
+                session.tokens_used = session_data.tokens_used
+                session.end_time = datetime.utcnow()
+            
+            # Save messages
+            for msg_data in session_data.messages:
+                message = Message(
+                    session_id=session.id,
+                    role=msg_data.get("role", "user"),
+                    content=msg_data.get("content", ""),
+                    has_image=msg_data.get("has_image", False),
+                    image_url=msg_data.get("image_url"),
+                    timestamp=msg_data.get("timestamp", datetime.utcnow()),
+                    tokens_used=msg_data.get("tokens_used", 0)
+                )
+                db.add(message)
+            
+            await db.commit()
+            logger.info(f"Saved session {session_data.session_id} for user {user_id}")
+            
+    except Exception as e:
+        logger.error(f"Error saving user session: {str(e)}", exc_info=True)
+        raise
 
 
 @tool
