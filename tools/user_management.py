@@ -8,13 +8,11 @@ from pydantic import BaseModel, Field
 
 
 class SessionData(BaseModel):
-    """User session data."""
-    
-    session_id: str
-    user_id: str
-    start_time: datetime
-    messages: List[dict]
-    plant_ids: List[str]
+    session_id: str = Field(description="Уникальный идентификатор сессии")
+    user_id: str = Field(description="ID пользователя")
+    start_time: datetime = Field(description="Время начала сессии")
+    messages: List[dict] = Field(description="История сообщений в рамках этой сессии")
+    plant_ids: List[str] = Field(description="Список ID растений, с которыми взаимодействовал пользователь")
 
 
 class PlantRecord(BaseModel):
