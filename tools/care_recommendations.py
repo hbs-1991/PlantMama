@@ -7,14 +7,10 @@ from pydantic import BaseModel, Field
 
 
 class CareInstructions(BaseModel):
-    """Personalized care instructions."""
-    
-    watering: str = Field(description="Watering schedule and amount")
-    lighting: str = Field(description="Light requirements")
-    temperature: str = Field(description="Temperature range")
-    humidity: str = Field(description="Humidity requirements")
-    soil: str = Field(description="Soil type and pH")
-    seasonal_tips: List[str] = Field(description="Season-specific care tips")
+    watering: str = Field(description="Рекомендации по поливу")
+    lighting: str = Field(description="Рекомендации по освещению")
+    soil: str = Field(description="Рекомендации по почве")
+    seasonal_tips: List[str] = Field(description="Сезонные советы по уходу")
 
 
 class FertilizerRecommendation(BaseModel):
