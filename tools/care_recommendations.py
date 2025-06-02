@@ -111,29 +111,73 @@ async def recommend_fertilizers(
 @tool
 async def recommend_tools(care_task: str, plant_size: str) -> List[ToolRecommendation]:
     """
-    Recommend appropriate gardening tools for specific tasks.
-    
-    Args:
-        care_task: Type of care task (pruning, repotting, etc.)
-        plant_size: Size of the plant (small/medium/large)
-        
-    Returns:
-        List of tool recommendations
-    """
-    # Placeholder implementation
-    return [
-        ToolRecommendation(
-            tool_name="Pruning Shears",
-            purpose="Clean cuts for pruning and deadheading",
-            price_range="$15-40",
-            brand_suggestions=["Fiskars", "Felco", "Corona"],
-            purchase_links=["Amazon", "Local garden center"],
-        ),
-        ToolRecommendation(
-            tool_name="Moisture Meter",
-            purpose="Check soil moisture levels accurately",
-            price_range="$10-25",
-            brand_suggestions=["XLUX", "Sonkir", "Dr.meter"],
-            purchase_links=["Amazon", "Home Depot"],
-        ),
+    Инструмент для подбора инструментов для ухода. LLM возвращает строго JSON-массив:
+    [
+      {
+        "name": "...",
+        "purpose": "...",
+        "price_range": "...",
+        "brand": "...",
+        "purchase_links": ["магазин1", "магазин2"]
+      },
+      ...
     ]
+    """
+    client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
+
+    system_prompt = (
+        "Ты — бот, отвечающий за подбор садового инвентаря. "
+        "На вход тебе дается задача по уходу (care_task) и размер растения. "
+        "Верни строго JSON-массив из трёх объектов с ключами:\n"
+        "  name, purpose, price_range, brand, purchase_links.\n"
+        "Пример:\n"
+        "[\n"
+        "  {\"name\": \"Ножницы для обрезки\", \"purpose\": \"обрезка сухих веток\", "
+        "\"price_range\": \"500-700 ₽\", \"brand\": \"Gardena\", "
+        "\"purchase_links\": [\"Леруа Мерлен\", \"Ozon\"]},\n"
+        "  {\"name\": \"Перчатки садовые\", \"purpose\": \"защита рук\", "
+        "\"price_range\": \"200-300 ₽\", \"brand\": \"Fiskars\", "
+        "\"purchase_links\": [\"Петрович\", \"Wildberries\"]},\n"
+        "  {\"name\": \"Компостёр\", \"purpose\": \"приготовление компоста\", "
+        "\"price_range\": \"1500-2000 ₽\", \"brand\": \"BioMaster\", "
+        "\"purchase_links\": [\"Ozon\", \"Садовый центр\"]}\n"
+        "]\n"
+        "Никакого лишнего текста."
+    )
+
+    user_prompt = (
+        f"Задача по уходу: {care_task}.\n"
+        f"Размер растения: {plant_size}.\n\n"
+        "Выведи JSON-массив."
+    )
+
+    try:
+        response = await client.chat.completions.create(
+            model="gpt-4",
+            temperature=0.3,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            max_tokens=500,
+        )
+
+        tools_text = response.choices[0].message.content.strip()
+        logger.info(f"Raw tool recommendations response: {tools_text}")
+
+        data = json.loads(tools_text)
+        result = [ToolRecommendation.parse_obj(item) for item in data]
+        return result
+
+    except Exception as exc:
+        logger.error(f"Ошибка recommend_tools: {exc}", exc_info=True)
+        # Возвращаем «пустой» дефолт
+        return [
+            ToolRecommendation(
+                name="Стандартные перчатки",
+                purpose="защита рук при уходе",
+                price_range="200-300 ₽",
+                brand="Generic",
+                purchase_links=["Любой садовый магазин"],
+            )
+        ]
