@@ -77,23 +77,33 @@ class PlantCareAgent:
 
             # Если пользователь отправляет изображение, добавим флаг
             if image_data:
-                # For now, we'll add image handling in the message
-                message = f"{message}\n\n[User has uploaded an image for analysis]"
-            
-            response = await self.agent.run(
-                messages=[{"role": "user", "content": message}],
-                config=run_config,
-                context=full_context,
-            )
-            
-            # Extract the final message
-            final_message = response.messages[-1].content if response.messages else ("Извините, я не смог обработать ваш запрос."
-                                                                                     "Пожалуйста, попробуйте ещё раз — например, отправьте фото растения или уточните, "
-                                                                                     "в чём нужна помощь. Я здесь, чтобы помочь! 🌿.")
-            
-            logger.info(f"Successfully processed message for user {user_id}")
-            return final_message
-            
+                context["has_image"] = True
+                # Концентрируемся на том, что текстовое поле message останется пустым,
+                # а агент поймёт, что есть картинка.
+                user_message = "[ПОЛЬЗОВАТЕЛЬ ЗАГРУЗИЛ ИЗОБРАЖЕНИЕ]"
+                # Передадим картинку как дополнительный аргумент
+                response = await self.agent.run(
+                    inputs=user_message,
+                    context={"user_id": user_id, "image": image_data},
+                    run_config=RunConfig(max_function_calls=3),
+                )
+            else:
+                context["has_image"] = False
+                response = await self.agent.run(
+                    inputs=message,
+                    context=context,
+                    run_config=RunConfig(max_function_calls=3),
+                )
+
+            # Обычно .run возвращает объект с атрибутом .output — конечным текстовым ответом агента.
+            # Если вдруг .output отсутствует, попытаемся читать из .messages[-1].content
+            if hasattr(response, "output"):
+                return response.output
+            elif hasattr(response, "messages") and response.messages:
+                return response.messages[-1].content
+            else:
+                return "Извините, я не смог обработать ваш запрос."
+
         except Exception as e:
             logger.error(f"Error processing message: {e}", exc_info=True)
             return "I'm sorry, I encountered an error processing your request. Please try again."
