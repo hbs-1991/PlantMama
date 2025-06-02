@@ -175,8 +175,17 @@ async def schedule_reminder(
     scheduled_time: datetime,
 ) -> None:
     """
-    Заглушка для планирования напоминания пользователю.
-    reminder_type может быть, например, 'watering', 'fertilizing' и т. д.
+    Schedule a care reminder for the user.
+    
+    Args:
+        user_id: User identifier (telegram ID)
+        reminder_type: Type of reminder (watering, fertilizing, pruning, etc.)
+        scheduled_time: When to send the reminder
+        plant_id: Optional plant ID this reminder is for
+        description: Optional description for the reminder
+        
+    Returns:
+        Created reminder information
     """
     # Здесь код, который сохранит напоминание в очередь / cron / calendar
     return None
