@@ -18,11 +18,14 @@ logger = logging.getLogger(__name__)
 
 
 class SessionData(BaseModel):
-    session_id: str = Field(description="Уникальный идентификатор сессии")
-    user_id: str = Field(description="ID пользователя")
-    start_time: datetime = Field(description="Время начала сессии")
-    messages: List[dict] = Field(description="История сообщений в рамках этой сессии")
-    plant_ids: List[str] = Field(description="Список ID растений, с которыми взаимодействовал пользователь")
+    """User session data."""
+    
+    session_id: str = Field(description="Unique session identifier")
+    user_id: str = Field(description="User identifier")
+    start_time: datetime = Field(description="Session start timestamp")
+    messages: List[dict] = Field(description="List of messages in session")
+    plant_ids: List[str] = Field(description="Plants discussed in session")
+    tokens_used: int = Field(description="Total tokens used")
 
 
 class PlantRecord(BaseModel):
