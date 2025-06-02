@@ -102,10 +102,6 @@ async def calculate_watering_schedule_user(
     return WateringScheduleUser(
         frequency_days=7,
         amount_ml=200,
-        next_watering=datetime.now(),
-        indicators=[
-            "Check if top 2 inches of soil are dry",
-            "Leaves should be firm, not drooping",
-            "Pot should feel light when lifted",
-        ],
+        next_watering=now,
+        indicators=["Сухая поверхность почвы", "Потеря тургора листьев"],
     )
