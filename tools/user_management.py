@@ -187,25 +187,60 @@ async def schedule_reminder(
     Returns:
         Created reminder information
     """
-    # Здесь код, который сохранит напоминание в очередь / cron / calendar
-    return None
-
-
-@tool
-async def calculate_watering_schedule_user(
-    plant_id: str,
-    pot_size: str,
-    humidity: float,
-) -> WateringScheduleUser:
-    """
-    Альтернативная версия расчёта расписания полива в модуле user_management.
-    Если он не нужен, можно удалить этот метод.
-    """
-    now = datetime.now()
-    # Делаем грубую заглушку: полив раз в 7 дней по 200 мл
-    return WateringScheduleUser(
-        frequency_days=7,
-        amount_ml=200,
-        next_watering=now,
-        indicators=["Сухая поверхность почвы", "Потеря тургора листьев"],
-    )
+    try:
+        async with get_db_session() as db:
+            # Get user
+            stmt = select(User).where(User.telegram_id == user_id)
+            result = await db.execute(stmt)
+            user = result.scalar_one_or_none()
+            
+            if not user:
+                # Create user if doesn't exist
+                user = User(
+                    telegram_id=user_id,
+                    created_at=datetime.utcnow()
+                )
+                db.add(user)
+                await db.flush()
+            
+            # Create reminder
+            reminder = Reminder(
+                user_id=user.id,
+                plant_id=int(plant_id) if plant_id else None,
+                type=reminder_type,
+                title=f"{reminder_type.capitalize()} reminder",
+                description=description or f"Time to {reminder_type} your plant!",
+                scheduled_at=scheduled_time,
+                status="pending",
+                created_at=datetime.utcnow()
+            )
+            db.add(reminder)
+            await db.commit()
+            
+            # Get plant name if plant_id provided
+            plant_name = None
+            if plant_id:
+                plant = await db.get(Plant, int(plant_id))
+                if plant:
+                    plant_name = plant.nickname or plant.name
+            
+            logger.info(f"Scheduled {reminder_type} reminder for user {user_id} at {scheduled_time}")
+            
+            return ReminderInfo(
+                reminder_id=str(reminder.id),
+                reminder_type=reminder_type,
+                scheduled_time=scheduled_time,
+                plant_name=plant_name,
+                status="pending"
+            )
+            
+    except Exception as e:
+        logger.error(f"Error scheduling reminder: {str(e)}", exc_info=True)
+        # Return a basic reminder info even on error
+        return ReminderInfo(
+            reminder_id="error",
+            reminder_type=reminder_type,
+            scheduled_time=scheduled_time,
+            plant_name=None,
+            status="failed"
+        )
