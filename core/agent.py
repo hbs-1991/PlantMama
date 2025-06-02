@@ -72,23 +72,10 @@ class PlantCareAgent:
         Возвращает ответ агента (текст).
         """
         try:
-            # Prepare run configuration
-            run_config = RunConfig(
-                max_turns=5,
-                tools_choice="auto",
-            )
-            
-            # Prepare context
-            full_context = {
-                "user_id": user_id,
-                "has_image": image_data is not None,
-                **(context or {}),
-            }
-            
-            # Run the agent
-            logger.info(f"Processing message from user {user_id}")
-            
-            # If there's an image, we need to handle it specially
+            # Добавляем в контекст информацию о юзере
+            context = {"user_id": user_id}
+
+            # Если пользователь отправляет изображение, добавим флаг
             if image_data:
                 # For now, we'll add image handling in the message
                 message = f"{message}\n\n[User has uploaded an image for analysis]"
