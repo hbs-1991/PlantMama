@@ -54,7 +54,11 @@ class ReminderInfo(BaseModel):
 @tool
 async def save_user_session(user_id: str, session_data: SessionData) -> None:
     """
-    Заглушка для сохранения сессии пользователя в базу.
+    Save user session data to database.
+    
+    Args:
+        user_id: User identifier (telegram ID)
+        session_data: Session data to save
     """
     # Здесь код для сохранения session_data в вашу БД
     return None
