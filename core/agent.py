@@ -68,16 +68,8 @@ class PlantCareAgent:
         context: Optional[dict] = None,
     ) -> str:
         """
-        Process a user message and return agent response.
-        
-        Args:
-            message: User's text message
-            user_id: Unique user identifier
-            image_data: Optional image data for plant analysis
-            context: Optional context data
-            
-        Returns:
-            Agent's response text
+        Основной метод: принимает ID пользователя, текстовое сообщение и (опционально) raw-данные изображения.
+        Возвращает ответ агента (текст).
         """
         try:
             # Prepare run configuration
