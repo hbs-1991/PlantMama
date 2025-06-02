@@ -58,9 +58,7 @@ class PlantCareAgent:
             instructions=self.system_prompt,
             tools=tools,
         )
-        
-        logger.info("PlantCare Agent initialized successfully")
-    
+
     async def process_message(
         self,
         message: str,
