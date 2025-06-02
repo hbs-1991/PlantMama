@@ -40,11 +40,7 @@ class WateringSchedule(BaseModel):
 @tool
 async def save_user_session(user_id: str, session_data: SessionData) -> None:
     """
-    Save user session data to database.
-    
-    Args:
-        user_id: User identifier
-        session_data: Session data to save
+    Заглушка для сохранения сессии пользователя в базу.
     """
     # Здесь код для сохранения session_data в вашу БД
     return None
