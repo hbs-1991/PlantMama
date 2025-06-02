@@ -103,8 +103,9 @@ class PlantCareAgent:
                 return "Извините, я не смог обработать ваш запрос."
 
         except Exception as e:
-            logger.error(f"Error processing message: {e}", exc_info=True)
-            return "I'm sorry, I encountered an error processing your request. Please try again."
+            logger.error(f"Ошибка в process_message: {e}", exc_info=True)
+            return "Извините, произошла внутренняя ошибка при обработке вашего запроса. Попробуйте ещё раз."
+
     
     async def analyze_plant_image(
         self,
