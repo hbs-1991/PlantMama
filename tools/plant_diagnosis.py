@@ -16,13 +16,11 @@ logger = logging.getLogger(__name__)
 
 
 class DiagnosisResult(BaseModel):
-    """Plant diagnosis result."""
-    
-    health_score: float = Field(description="Overall health score (1-10)")
-    issues: list[str] = Field(description="List of detected issues")
-    severity: str = Field(description="Severity level: mild, moderate, severe")
-    confidence: float = Field(description="Confidence score (0-1)")
-    recommendations: list[str] = Field(description="Immediate action recommendations")
+    health_score: float = Field(description="Индекс здоровья растения (1-10)")
+    issues: List[str] = Field(description="Список обнаруженных проблем")
+    severity: str = Field(description="Уровень тяжести: mild, moderate, severe")
+    confidence: float = Field(description="Достоверность диагноза (0-1)")
+    recommendations: List[str] = Field(description="Список рекомендаций по первичным действиям")
 
 
 class PlantIdentification(BaseModel):
