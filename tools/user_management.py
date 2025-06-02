@@ -28,13 +28,11 @@ class PlantRecord(BaseModel):
     health_history: List[dict]
 
 
-class WateringSchedule(BaseModel):
-    """Watering schedule calculation result."""
-    
-    frequency_days: int
-    amount_ml: int
-    next_watering: datetime
-    indicators: List[str]
+class WateringScheduleUser(BaseModel):
+    frequency_days: int = Field(description="Интервал полива (в днях)")
+    amount_ml: int = Field(description="Количество воды (в мл)")
+    next_watering: datetime = Field(description="Дата/время следующего полива")
+    indicators: List[str] = Field(description="Признаки, указывающие на необходимость полива")
 
 
 @tool
