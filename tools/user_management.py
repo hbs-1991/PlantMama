@@ -114,15 +114,52 @@ async def get_user_plant_history(user_id: str) -> List[PlantRecord]:
     """
     Заглушка для получения истории растений пользователя.
     """
-    # В продакшене тут запрос к БД.
-    now = datetime.now()
-    dummy = PlantRecord(
-        plant_id="example_plant",
-        added_date=now,
-        last_diagnosis=now,
-        health_history=[{"date": now.isoformat(), "health_score": 7.5}],
-    )
-    return [dummy]
+    try:
+        async with get_db_session() as db:
+            # Get user
+            stmt = select(User).where(User.telegram_id == user_id)
+            result = await db.execute(stmt)
+            user = result.scalar_one_or_none()
+            
+            if not user:
+                logger.info(f"No user found with telegram_id {user_id}")
+                return []
+            
+            # Get user's plants
+            stmt = select(Plant).where(Plant.user_id == user.id)
+            result = await db.execute(stmt)
+            plants = result.scalars().all()
+            
+            plant_records = []
+            for plant in plants:
+                # Get latest diagnosis for each plant
+                stmt = (
+                    select(Diagnosis)
+                    .where(Diagnosis.plant_id == plant.id)
+                    .order_by(desc(Diagnosis.created_at))
+                    .limit(1)
+                )
+                result = await db.execute(stmt)
+                latest_diagnosis = result.scalar_one_or_none()
+                
+                record = PlantRecord(
+                    plant_id=str(plant.id),
+                    species=plant.species or plant.name,
+                    nickname=plant.nickname,
+                    added_date=plant.added_at,
+                    last_diagnosis=latest_diagnosis.created_at if latest_diagnosis else None,
+                    health_score=latest_diagnosis.health_score if latest_diagnosis else plant.health_score,
+                    location=plant.location,
+                    care_notes=plant.notes
+                )
+                plant_records.append(record)
+            
+            logger.info(f"Retrieved {len(plant_records)} plants for user {user_id}")
+            return plant_records
+            
+    except Exception as e:
+        logger.error(f"Error retrieving plant history: {str(e)}", exc_info=True)
+        return []
 
 
 @tool
