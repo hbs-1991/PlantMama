@@ -83,9 +83,8 @@ async def schedule_reminder(
     Заглушка для планирования напоминания пользователю.
     reminder_type может быть, например, 'watering', 'fertilizing' и т. д.
     """
-    # Placeholder implementation
-    # In production, this would create a scheduled task
-    pass
+    # Здесь код, который сохранит напоминание в очередь / cron / calendar
+    return None
 
 
 @tool
