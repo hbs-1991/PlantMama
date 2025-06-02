@@ -77,35 +77,76 @@ async def recommend_fertilizers(
     season: str,
 ) -> List[FertilizerRecommendation]:
     """
-    Recommend suitable fertilizers based on plant needs.
-    
-    Args:
-        plant_type: Type/species of plant
-        soil_condition: Current soil condition
-        season: Current season
-        
-    Returns:
-        List of fertilizer recommendations
-    """
-    # Placeholder implementation
-    return [
-        FertilizerRecommendation(
-            name="Balanced Liquid Fertilizer",
-            npk_ratio="10-10-10",
-            frequency="Every 2 weeks during growing season",
-            amount="1/4 strength of package directions",
-            organic=False,
-            price_range="budget",
-        ),
-        FertilizerRecommendation(
-            name="Organic Compost Tea",
-            npk_ratio="3-2-2",
-            frequency="Weekly during summer",
-            amount="Dilute 1:5 with water",
-            organic=True,
-            price_range="medium",
-        ),
+    Инструмент для подбора удобрений. LLM возвращает строго JSON-массив объектов:
+    [
+      {
+        "name": "...",
+        "npk_ratio": "...",
+        "frequency": "...",
+        "amount": "...",
+        "organic": <true|false>,
+        "price_range": "..."
+      },
+      ...
     ]
+    """
+    client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
+
+    system_prompt = (
+        "Ты — эксперт по удобрениям для домашних растений. "
+        "На вход тебе даются тип растения, состояние почвы и время года. "
+        "Верни строго JSON-массив из трёх объектов с полями:\n"
+        "  name, npk_ratio, frequency, amount, organic, price_range.\n"
+        "Пример ответа:\n"
+        "[\n"
+        "  {\"name\": \"Удобрение A\", \"npk_ratio\": \"10-10-10\", \"frequency\": \"раз в 2 недели\", "
+        "\"amount\": \"5 г\", \"organic\": true, \"price_range\": \"500-700 ₽\"},\n"
+        "  {\"name\": \"Удобрение B\", \"npk_ratio\": \"20-20-20\", \"frequency\": \"раз в месяц\", "
+        "\"amount\": \"7 г\", \"organic\": false, \"price_range\": \"400-600 ₽\"},\n"
+        "  {\"name\": \"Удобрение C\", \"npk_ratio\": \"5-5-5\", \"frequency\": \"раз в 3 недели\", "
+        "\"amount\": \"10 г\", \"organic\": true, \"price_range\": \"600-800 ₽\"}\n"
+        "]\n"
+        "Никакого другого текста."
+    )
+
+    user_prompt = (
+        f"Тип растения: {plant_type}.\n"
+        f"Состояние почвы: {soil_condition}.\n"
+        f"Сезон: {season}.\n\n"
+        "Сформируй JSON-массив из трёх рекомендаций."
+    )
+
+    try:
+        response = await client.chat.completions.create(
+            model="gpt-4",
+            temperature=0.3,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            max_tokens=500,
+        )
+
+        fert_text = response.choices[0].message.content.strip()
+        logger.info(f"Raw fertilizer recommendations response: {fert_text}")
+
+        data = json.loads(fert_text)
+        result = [FertilizerRecommendation.parse_obj(item) for item in data]
+        return result
+
+    except Exception as exc:
+        logger.error(f"Ошибка recommend_fertilizers: {exc}", exc_info=True)
+        # Возвращаем «пустой» список с одним дефолтом
+        return [
+            FertilizerRecommendation(
+                name="Универсальное удобрение",
+                npk_ratio="NPK неизвестно",
+                frequency="раз в месяц",
+                amount="5 г",
+                organic=False,
+                price_range="от 300 ₽",
+            )
+        ]
 
 
 @tool
