@@ -62,20 +62,15 @@ async def get_user_plant_history(user_id: str) -> List[PlantRecord]:
     Returns:
         List of plant records
     """
-    # Placeholder implementation
-    return [
-        PlantRecord(
-            plant_id="plant_123",
-            species="Monstera deliciosa",
-            nickname="Monty",
-            added_date=datetime.now(),
-            last_diagnosis=datetime.now(),
-            health_history=[
-                {"date": "2024-01-15", "health_score": 8.5},
-                {"date": "2024-02-01", "health_score": 7.5},
-            ],
-        ),
-    ]
+    # В продакшене тут запрос к БД.
+    now = datetime.now()
+    dummy = PlantRecord(
+        plant_id="example_plant",
+        added_date=now,
+        last_diagnosis=now,
+        health_history=[{"date": now.isoformat(), "health_score": 7.5}],
+    )
+    return [dummy]
 
 
 @tool
