@@ -63,7 +63,6 @@ class PlantCareAgent:
         self,
         user_id: str,
         message: str,
-        user_id: str,
         image_data: Optional[bytes] = None,
         context: Optional[dict] = None,
     ) -> str:
