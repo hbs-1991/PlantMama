@@ -18,14 +18,12 @@ class CareInstructions(BaseModel):
 
 
 class FertilizerRecommendation(BaseModel):
-    """Fertilizer recommendation."""
-    
-    name: str = Field(description="Fertilizer name/type")
-    npk_ratio: str = Field(description="NPK ratio (e.g., 10-10-10)")
-    frequency: str = Field(description="Application frequency")
-    amount: str = Field(description="Amount per application")
-    organic: bool = Field(description="Is organic fertilizer")
-    price_range: str = Field(description="Price category: budget/medium/premium")
+    name: str = Field(description="Название удобрения")
+    npk_ratio: str = Field(description="Соотношение NPK")
+    frequency: str = Field(description="Как часто применять")
+    amount: str = Field(description="Количество за раз")
+    organic: bool = Field(description="Является ли органическим")
+    price_range: str = Field(description="Диапазон цен")
 
 
 class ToolRecommendation(BaseModel):
