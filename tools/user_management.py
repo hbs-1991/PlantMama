@@ -80,12 +80,8 @@ async def schedule_reminder(
     scheduled_time: datetime,
 ) -> None:
     """
-    Schedule a care reminder for the user.
-    
-    Args:
-        user_id: User identifier
-        reminder_type: Type of reminder (watering, fertilizing, etc.)
-        scheduled_time: When to send the reminder
+    Заглушка для планирования напоминания пользователю.
+    reminder_type может быть, например, 'watering', 'fertilizing' и т. д.
     """
     # Placeholder implementation
     # In production, this would create a scheduled task
