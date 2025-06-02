@@ -112,7 +112,13 @@ async def save_user_session(user_id: str, session_data: SessionData) -> None:
 @tool
 async def get_user_plant_history(user_id: str) -> List[PlantRecord]:
     """
-    Заглушка для получения истории растений пользователя.
+    Retrieve user's plant history and records.
+    
+    Args:
+        user_id: User identifier (telegram ID)
+        
+    Returns:
+        List of plant records with their latest health status
     """
     try:
         async with get_db_session() as db:
