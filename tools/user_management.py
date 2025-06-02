@@ -173,7 +173,9 @@ async def schedule_reminder(
     user_id: str,
     reminder_type: str,
     scheduled_time: datetime,
-) -> None:
+    plant_id: Optional[str] = None,
+    description: Optional[str] = None
+) -> ReminderInfo:
     """
     Schedule a care reminder for the user.
     
