@@ -290,8 +290,11 @@ class ImageProcessor:
             if features.get("green_ratio", 0) < 0.05:
                 return False, "Image doesn't appear to contain a plant (very low green content)"
             
-            if features.get("brightness", 0) < 30:
-                return False, "Image is too dark"
+            brightness = features.get("brightness", 128)
+            if brightness < 30:
+                return False, "Image is too dark for analysis"
+            elif brightness > 250:
+                return False, "Image is too bright/overexposed for analysis"
             
             if features.get("brightness", 0) > 250:
                 return False, "Image is too bright/overexposed"
