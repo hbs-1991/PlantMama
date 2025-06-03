@@ -53,6 +53,7 @@ class ImageProcessor:
                 "original_format": image.format,
                 "original_size": image.size,
                 "mode": image.mode,
+                "file_size": len(image_data),
             }
             
             # Convert to RGB if necessary
