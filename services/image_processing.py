@@ -310,3 +310,42 @@ class ImageProcessor:
         except Exception as e:
             logger.error(f"Error validating image: {e}")
             return False, str(e)
+    
+    @classmethod
+    async def save_image(cls, image_data: bytes, user_id: str, plant_id: Optional[str] = None) -> str:
+        """
+        Save processed image to storage.
+        
+        Args:
+            image_data: Processed image bytes
+            user_id: User identifier
+            plant_id: Optional plant identifier
+            
+        Returns:
+            Path to saved image
+        """
+        try:
+            # Create upload directory structure
+            upload_dir = settings.UPLOAD_DIR / user_id
+            upload_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Generate filename
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            image_hash = hashlib.md5(image_data).hexdigest()[:8]
+            
+            if plant_id:
+                filename = f"plant_{plant_id}_{timestamp}_{image_hash}.jpg"
+            else:
+                filename = f"plant_{timestamp}_{image_hash}.jpg"
+            
+            # Save image
+            file_path = upload_dir / filename
+            with open(file_path, "wb") as f:
+                f.write(image_data)
+            
+            logger.info(f"Saved image: {file_path}")
+            return str(file_path)
+            
+        except Exception as e:
+            logger.error(f"Error saving image: {e}")
+            raise
