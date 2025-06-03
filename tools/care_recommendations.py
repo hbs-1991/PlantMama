@@ -92,7 +92,7 @@ async def generate_care_instructions(
         logger.info(f"Raw care instructions response: {instructions_text}")
 
         data = json.loads(instructions_text)
-        return CareInstructions.parse_obj(data)
+        return CareInstructions.model_validate(data)
 
     except Exception as exc:
         logger.error(f"Ошибка generate_care_instructions: {exc}", exc_info=True)
