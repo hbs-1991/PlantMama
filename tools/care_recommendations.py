@@ -105,7 +105,7 @@ async def generate_care_instructions(
         )
 
 
-@tool
+@function_tool
 async def recommend_fertilizers(
     plant_type: str,
     soil_condition: str,
