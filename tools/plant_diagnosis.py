@@ -31,7 +31,7 @@ class PlantIdentification(BaseModel):
     alternatives: List[str] = Field(description="Альтернативные варианты вида")
 
 
-@tool
+@function_tool
 async def diagnose_plant_photo(
     image_data: bytes,
     user_context: Optional[Dict] = None,
