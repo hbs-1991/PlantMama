@@ -6,7 +6,7 @@ import re
 import json
 from typing import Dict, Optional, List
 
-from agents import tool
+from agents import function_tool
 from pydantic import BaseModel, Field
 from openai import AsyncOpenAI
 
