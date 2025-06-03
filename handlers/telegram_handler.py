@@ -1,6 +1,7 @@
 """Telegram bot handler."""
 
 import logging
+import io
 from typing import Optional
 import speech_recognition as sr
 
