@@ -5,7 +5,7 @@ import logging
 from datetime import datetime, timedelta
 from typing import List, Optional, Dict
 
-from agents import tool
+from agents import function_tool
 from pydantic import BaseModel, Field
 from sqlalchemy import select, desc
 from sqlalchemy.ext.asyncio import AsyncSession
