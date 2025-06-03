@@ -82,6 +82,7 @@ class ImageProcessor:
             processed_data = output.getvalue()
             
             metadata["processed_size"] = len(processed_data)
+            metadata["compression_ratio"] = round(len(processed_data) / len(image_data), 2)
             
             logger.info(f"Processed image: {metadata}")
             return processed_data, metadata
