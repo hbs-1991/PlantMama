@@ -91,8 +91,9 @@ class PlantCareAgent:
                 )
             else:
                 context["has_image"] = False
-                response = await self.agent.run(
-                    inputs=message,
+                response = await Runner.run(
+                    self.agent,
+                    input=message,
                     context=context,
                     run_config=RunConfig(max_function_calls=3),
                 )
