@@ -2,6 +2,7 @@
 
 import io
 import logging
+import hashlib
 from typing import Tuple, Optional
 
 from PIL import Image
