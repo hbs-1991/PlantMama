@@ -51,7 +51,7 @@ class ReminderInfo(BaseModel):
     status: str = Field(description="Reminder status")
 
 
-@tool
+@function_tool
 async def save_user_session(user_id: str, session_data: SessionData) -> None:
     """
     Save user session data to database.
