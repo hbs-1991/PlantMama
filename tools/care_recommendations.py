@@ -242,7 +242,7 @@ async def recommend_tools(care_task: str, plant_size: str) -> List[ToolRecommend
         logger.info(f"Raw tool recommendations response: {tools_text}")
 
         data = json.loads(tools_text)
-        result = [ToolRecommendation.parse_obj(item) for item in data]
+        result = [ToolRecommendation.model_validate(item) for item in data]
         return result
 
     except Exception as exc:
