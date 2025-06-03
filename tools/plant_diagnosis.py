@@ -21,8 +21,7 @@ class DiagnosisResult(BaseModel):
     issues: list[str] = Field(description="Список обнаруженных проблем")
     severity: str = Field(description="Уровень тяжести: mild, moderate, severe")
     confidence: float = Field(description="Достоверность диагноза (0-1)")
-    recommendations: List[str] = Field(description="Список рекомендаций по первичным действиям")
-
+    recommendations: list[str] = Field(description="Список рекомендаций по первичным действиям")
 
 class PlantIdentification(BaseModel):
     species: str = Field(description="Название вида/таксона (вида)")
