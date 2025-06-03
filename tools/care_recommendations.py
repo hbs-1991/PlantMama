@@ -32,6 +32,7 @@ class FertilizerRecommendation(BaseModel):
 
 
 class ToolRecommendation(BaseModel):
+    model_config = ConfigDict(extra="forbid")  # 💥 обязательный параметр
     name: str = Field(description="Название инструмента")
     purpose: str = Field(description="Назначение")
     price_range: str = Field(description="Диапазон цен")
