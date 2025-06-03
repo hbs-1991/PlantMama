@@ -92,6 +92,23 @@ class ImageProcessor:
             raise ValueError(f"Failed to process image: {str(e)}")
     
     @classmethod
+    def _enhance_plant_image(cls, image: Image.Image) -> Image.Image:
+        """Enhance image for better plant detection."""
+        # Slightly increase contrast
+        contrast = ImageEnhance.Contrast(image)
+        image = contrast.enhance(1.1)
+        
+        # Slightly increase color saturation
+        color = ImageEnhance.Color(image)
+        image = color.enhance(1.1)
+        
+        # Ensure good sharpness
+        sharpness = ImageEnhance.Sharpness(image)
+        image = sharpness.enhance(1.1)
+        
+        return image
+    
+    @classmethod
     async def extract_plant_features(cls, image_data: bytes) -> dict:
         """
         Extract visual features from plant image.
