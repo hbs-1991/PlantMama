@@ -2,7 +2,6 @@ import logging
 from typing import Optional
 
 from agents import Agent, RunConfig, Runner
-from openai import AsyncOpenAI
 
 from config.settings import settings
 from tools.plant_diagnosis import diagnose_plant_photo, identify_plant_species
