@@ -284,7 +284,7 @@ class ImageProcessor:
             processed_data, metadata = await cls.process_image(image_data)
             
             # Extract features
-            features = await cls.extract_plant_features(image_data)
+            features = await cls.extract_plant_features(processed_data)
             
             # Basic validation
             if features.get("green_ratio", 0) < 0.05:
