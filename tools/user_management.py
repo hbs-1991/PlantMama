@@ -109,7 +109,7 @@ async def save_user_session(user_id: str, session_data: SessionData) -> None:
         raise
 
 
-@tool
+@function_tool
 async def get_user_plant_history(user_id: str) -> List[PlantRecord]:
     """
     Retrieve user's plant history and records.
