@@ -164,7 +164,7 @@ async def get_plant_encyclopedia(plant_name: str) -> PlantInfo:
         return PlantInfo.model_validate(result_dict)
 
 
-@tool
+@function_tool
 async def calculate_watering_schedule(
     plant_id: str,
     pot_size: str,
