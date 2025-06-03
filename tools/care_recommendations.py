@@ -51,7 +51,7 @@ class DiagnosisInput(BaseModel):
 @function_tool
 async def generate_care_instructions(
     plant_id: str,
-    diagnosis: Dict,
+    diagnosis: DiagnosisInput,
     season: str,
 ) -> CareInstructions:
     """
