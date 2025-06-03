@@ -44,6 +44,10 @@ class ImageProcessor:
             if image.format not in cls.ALLOWED_FORMATS:
                 raise ValueError(f"Unsupported image format: {image.format}")
             
+            # Validate size
+            if image.size[0] < cls.MIN_SIZE[0] or image.size[1] < cls.MIN_SIZE[1]:
+                raise ValueError(f"Image too small: {image.size}")
+            
             # Get metadata
             metadata = {
                 "original_format": image.format,
