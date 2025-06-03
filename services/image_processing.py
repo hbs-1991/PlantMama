@@ -129,7 +129,7 @@ class ImageProcessor:
             # Convert to numpy array
             img_array = np.array(image)
             
-            # Basic feature extraction
+            # Extract features
             features = {
                 "dominant_colors": cls._get_dominant_colors(img_array),
                 "brightness": float(np.mean(img_array)),
