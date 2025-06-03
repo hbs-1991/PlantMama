@@ -24,6 +24,7 @@ class DiagnosisResult(BaseModel):
     recommendations: list[str] = Field(description="Список рекомендаций по первичным действиям")
 
 class PlantIdentification(BaseModel):
+    model_config = ConfigDict(extra="forbid")  # ❗ обязательно
     species: str = Field(description="Название вида/таксона (вида)")
     common_name: str = Field(description="Распространенное название")
     scientific_name: str = Field(description="Научное латинское название")
