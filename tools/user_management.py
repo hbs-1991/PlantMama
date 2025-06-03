@@ -168,7 +168,7 @@ async def get_user_plant_history(user_id: str) -> List[PlantRecord]:
         return []
 
 
-@tool
+@function_tool
 async def schedule_reminder(
     user_id: str,
     reminder_type: str,
