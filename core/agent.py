@@ -84,8 +84,9 @@ class PlantCareAgent:
                 # а агент поймёт, что есть картинка.
                 user_message = "[ПОЛЬЗОВАТЕЛЬ ЗАГРУЗИЛ ИЗОБРАЖЕНИЕ]"
                 # Передадим картинку как дополнительный аргумент
-                response = await self.agent.run(
-                    inputs=user_message,
+                response = await Runner.run(
+                    self.agent,
+                    input=user_message,
                     context={"user_id": user_id, "image": image_data},
                     run_config=RunConfig(max_function_calls=3),
                 )
