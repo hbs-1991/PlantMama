@@ -288,7 +288,7 @@ class ImageProcessor:
             
             # Check for critical issues
             if features.get("green_ratio", 0) < 0.05:
-                return False, "Image doesn't appear to contain a plant"
+                return False, "Image doesn't appear to contain a plant (very low green content)"
             
             if features.get("brightness", 0) < 30:
                 return False, "Image is too dark"
