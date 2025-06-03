@@ -6,7 +6,7 @@ from handlers.telegram_handler import TelegramBot
 from utils.logging_config import setup_logging
 
 
-async def main() -> None:
+def main() -> None:
     """Start the PlantCare Agent application."""
     # Setup logging
     setup_logging(settings.LOG_LEVEL)
