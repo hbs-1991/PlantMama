@@ -102,7 +102,7 @@ async def diagnose_plant_photo(
         )
 
 
-@tool
+@function_tool
 async def identify_plant_species(image_data: bytes) -> PlantIdentification:
     """
     Инструмент для идентификации вида растения по фотографии.
