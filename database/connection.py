@@ -61,6 +61,10 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
             await session.close()
 
 
+# Alias for compatibility
+get_db_session = get_session
+
+
 class DatabaseManager:
     """Database manager for common operations."""
     
