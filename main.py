@@ -1,6 +1,3 @@
-"""Main application entry point."""
-
-import asyncio
 import logging
 import asyncio
 from config.settings import settings
