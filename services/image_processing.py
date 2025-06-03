@@ -78,7 +78,7 @@ class ImageProcessor:
             
             # Save processed image
             output = io.BytesIO()
-            image.save(output, format="JPEG", quality=90, optimize=True)
+            image.save(output, format="JPEG", quality=85, optimize=True)
             processed_data = output.getvalue()
             
             metadata["processed_size"] = len(processed_data)
