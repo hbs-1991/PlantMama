@@ -3,7 +3,12 @@
 import logging
 from typing import Optional
 
-from telegram import Update, BotCommand
+from telegram import (
+    Update, 
+    BotCommand,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+)
 from telegram.ext import (
     Application,
     CommandHandler,
