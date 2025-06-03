@@ -140,6 +140,9 @@ class ImageProcessor:
                 "leaf_edge_detection": cls._detect_leaf_edges(img_array),
             }
             
+            # Detect potential issues
+            features["potential_issues"] = cls._detect_visual_issues(features)
+            
             return features
             
         except Exception as e:
