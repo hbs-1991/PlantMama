@@ -286,7 +286,7 @@ class ImageProcessor:
             # Extract features
             features = await cls.extract_plant_features(processed_data)
             
-            # Basic validation
+            # Check for critical issues
             if features.get("green_ratio", 0) < 0.05:
                 return False, "Image doesn't appear to contain a plant"
             
