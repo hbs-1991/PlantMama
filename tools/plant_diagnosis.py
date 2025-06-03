@@ -87,7 +87,7 @@ async def diagnose_plant_photo(
         # Парсим JSON
         data = json.loads(diagnosis_text)
         # Валидируем через Pydantic
-        result = DiagnosisResult.parse_obj(data)
+        result = DiagnosisResult.model_validate(data)
         return result
 
     except Exception as exc:
