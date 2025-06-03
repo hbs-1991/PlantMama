@@ -296,8 +296,14 @@ class ImageProcessor:
             elif brightness > 250:
                 return False, "Image is too bright/overexposed for analysis"
             
-            if features.get("brightness", 0) > 250:
-                return False, "Image is too bright/overexposed"
+            # Check image size
+            if metadata.get("original_size", (0, 0))[0] < cls.MIN_SIZE[0]:
+                return False, f"Image too small. Minimum size is {cls.MIN_SIZE[0]}x{cls.MIN_SIZE[1]} pixels"
+            
+            # Warn about potential issues but don't reject
+            issues = features.get("potential_issues", [])
+            if issues:
+                logger.warning(f"Image has potential issues: {issues}")
             
             return True, None
             
