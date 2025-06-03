@@ -102,7 +102,10 @@ class TelegramBot:
 
 Используй /help, чтобы увидеть все доступные команды.
         """
-        await update.message.reply_text(welcome_message)
+        await update.message.reply_text(
+            welcome_message,
+            reply_markup=self._get_main_keyboard()
+        )
     
     async def handle_help(
         self, update: Update, context: ContextTypes.DEFAULT_TYPE
