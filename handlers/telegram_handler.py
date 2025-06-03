@@ -64,7 +64,7 @@ class TelegramBot:
             await self.application.updater.stop()
             await self.application.stop()
             await self.application.shutdown()
-            
+
         logger.info("Telegram bot stopped")
     
     def _register_handlers(self) -> None:
