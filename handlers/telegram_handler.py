@@ -147,6 +147,164 @@ class TelegramBot:
         
         await update.message.reply_text(response)
     
+    async def handle_voice(
+        self, update: Update, context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
+        """Handle voice messages."""
+        user_id = str(update.effective_user.id)
+        
+        try:
+            # Send typing indicator
+            await update.message.chat.send_action("typing")
+            
+            # Download voice file
+            voice_file = await update.message.voice.get_file()
+            voice_bytes = await voice_file.download_as_bytearray()
+            
+            # Convert voice to text (placeholder - in production use OpenAI Whisper)
+            text = "Извините, обработка голосовых сообщений временно недоступна. Пожалуйста, отправьте текстовое сообщение или фото растения."
+            
+            # For now, inform user about the limitation
+            await update.message.reply_text(
+                "🎤 Голосовое сообщение получено.\n\n" + text
+            )
+            
+        except Exception as e:
+            logger.error(f"Error processing voice message: {e}")
+            await update.message.reply_text(
+                "Произошла ошибка при обработке голосового сообщения. Попробуйте еще раз."
+            )
+    
+    def _get_main_keyboard(self) -> InlineKeyboardMarkup:
+        """Get main inline keyboard."""
+        keyboard = [
+            [
+                InlineKeyboardButton("📸 Диагностика по фото", callback_data="action_photo"),
+                InlineKeyboardButton("🌿 Мои растения", callback_data="action_my_plants")
+            ],
+            [
+                InlineKeyboardButton("💡 Совет дня", callback_data="action_tip"),
+                InlineKeyboardButton("📚 Энциклопедия", callback_data="action_encyclopedia")
+            ],
+            [
+                InlineKeyboardButton("⏰ Напоминания", callback_data="action_reminders"),
+                InlineKeyboardButton("❓ Помощь", callback_data="action_help")
+            ]
+        ]
+        return InlineKeyboardMarkup(keyboard)
+    
+    async def handle_callback_query(
+        self, update: Update, context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
+        """Handle callback queries from inline keyboards."""
+        query = update.callback_query
+        user_id = str(query.from_user.id)
+        
+        # Answer callback query to remove loading state
+        await query.answer()
+        
+        # Handle different actions
+        if query.data == "action_photo":
+            await query.edit_message_text(
+                "📸 Отправьте фото вашего растения, и я проведу диагностику!\n\n"
+                "Для лучшего результата:\n"
+                "• Фотографируйте при хорошем освещении\n"
+                "• Покажите проблемные участки крупным планом\n"
+                "• Можете добавить описание в подписи к фото"
+            )
+        
+        elif query.data == "action_my_plants":
+            response = await self.agent.process_message(
+                message="Покажи мои растения",
+                user_id=user_id,
+            )
+            await query.edit_message_text(response)
+        
+        elif query.data == "action_tip":
+            response = await self.agent.process_message(
+                message="Дай совет по уходу за растениями на сегодня",
+                user_id=user_id,
+            )
+            await query.edit_message_text(
+                f"💡 **Совет дня**\n\n{response}",
+                parse_mode="Markdown"
+            )
+        
+        elif query.data == "action_encyclopedia":
+            await query.edit_message_text(
+                "📚 **Энциклопедия растений**\n\n"
+                "Напишите название растения, и я расскажу о нем всё:\n"
+                "• Научная классификация\n"
+                "• Условия содержания\n"
+                "• Особенности ухода\n\n"
+                "Например: _Монстера_, _Фикус_, _Орхидея_",
+                parse_mode="Markdown"
+            )
+        
+        elif query.data == "action_reminders":
+            await query.edit_message_text(
+                "⏰ **Управление напоминаниями**\n\n"
+                "Я могу напоминать вам о:\n"
+                "• Поливе растений\n"
+                "• Подкормке\n"
+                "• Пересадке\n"
+                "• Обработке от вредителей\n\n"
+                "Чтобы создать напоминание, напишите, например:\n"
+                "_Напомни полить монстеру через 3 дня_",
+                parse_mode="Markdown"
+            )
+        
+        elif query.data == "action_help":
+            help_text = self._get_help_text()
+            await query.edit_message_text(help_text, parse_mode="Markdown")
+        
+        # Plant-specific actions
+        elif query.data.startswith("plant_"):
+            action = query.data.split("_")[1]
+            plant_id = query.data.split("_")[2]
+            
+            if action == "water":
+                response = await self.agent.process_message(
+                    message=f"Запланируй полив для растения {plant_id}",
+                    user_id=user_id,
+                )
+                await query.edit_message_text(response)
+            
+            elif action == "diagnose":
+                await query.edit_message_text(
+                    f"Отправьте фото растения #{plant_id} для диагностики"
+                )
+    
+    def _get_help_text(self) -> str:
+        """Get help text."""
+        return """
+📚 **PlantMama AI — Справка**
+
+**Команды:**
+/start — Начать работу с ботом
+/help — Показать эту справку
+/my\_plants — Мои растения
+
+**Возможности:**
+• 📸 Диагностика по фото
+• 🔍 Определение вида растения
+• 💚 Персональные советы по уходу
+• 📅 Напоминания о поливе
+• 📚 База знаний о растениях
+
+**Как пользоваться:**
+1. Отправьте фото растения для диагностики
+2. Задайте вопрос об уходе
+3. Получите рекомендации
+
+**Примеры вопросов:**
+• "Почему желтеют листья?"
+• "Как часто поливать фикус?"
+• "Что за пятна на листьях?"
+
+💡 *Совет*: Для точной диагностики отправляйте четкие фото при хорошем освещении!
+        """
+    
     async def handle_photo(
         self, update: Update, context: ContextTypes.DEFAULT_TYPE
     ) -> None:
