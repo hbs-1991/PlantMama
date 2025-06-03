@@ -152,7 +152,7 @@ async def identify_plant_species(image_data: bytes) -> PlantIdentification:
         logger.info(f"Raw identify response: {ident_text}")
 
         data = json.loads(ident_text)
-        result = PlantIdentification.parse_obj(data)
+        result = PlantIdentification.model_validate(data)
         return result
 
     except Exception as exc:
