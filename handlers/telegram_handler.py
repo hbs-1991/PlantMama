@@ -22,6 +22,7 @@ from telegram.ext import (
 
 from config.settings import settings
 from core.agent import PlantCareAgent
+from services.image_processing import ImageProcessor
 
 logger = logging.getLogger(__name__)
 
