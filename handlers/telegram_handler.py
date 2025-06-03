@@ -324,24 +324,77 @@ class TelegramBot:
         """Handle photo messages."""
         user_id = str(update.effective_user.id)
         
-        # Send typing indicator
-        await update.message.chat.send_action("typing")
-        
-        # Get the largest photo
-        photo_file = await update.message.photo[-1].get_file()
-        photo_bytes = await photo_file.download_as_bytearray()
-        
-        # Get caption if any
-        caption = update.message.caption or ""
-        
-        # Process with agent
-        response = await self.agent.analyze_plant_image(
-            image_data=bytes(photo_bytes),
-            user_id=user_id,
-            additional_info=caption,
-        )
-        
-        await update.message.reply_text(response)
+        try:
+            # Send typing indicator
+            await update.message.chat.send_action("typing")
+            
+            # Get the largest photo
+            photo_file = await update.message.photo[-1].get_file()
+            photo_bytes = await photo_file.download_as_bytearray()
+            
+            # Validate image
+            processor = ImageProcessor()
+            is_valid, error_msg = await processor.validate_plant_image(bytes(photo_bytes))
+            
+            if not is_valid:
+                await update.message.reply_text(
+                    f"❌ Не удалось обработать изображение:\n{error_msg}\n\n"
+                    "Пожалуйста, убедитесь, что:\n"
+                    "• На фото есть растение\n"
+                    "• Изображение четкое и не слишком темное\n"
+                    "• Размер файла не превышает 10MB"
+                )
+                return
+            
+            # Process image
+            processed_image, metadata = await processor.process_image(bytes(photo_bytes))
+            
+            # Save image for user
+            image_path = await processor.save_image(
+                processed_image,
+                user_id=user_id
+            )
+            
+            # Get caption if any
+            caption = update.message.caption or ""
+            
+            # Notify about processing
+            await update.message.reply_text(
+                "🔍 Анализирую фотографию...\n"
+                "Это может занять несколько секунд."
+            )
+            
+            # Process with agent
+            response = await self.agent.analyze_plant_image(
+                image_data=processed_image,
+                user_id=user_id,
+                additional_info=caption,
+            )
+            
+            # Send response with action buttons
+            plant_keyboard = [
+                [
+                    InlineKeyboardButton("💧 График полива", callback_data="plant_water_new"),
+                    InlineKeyboardButton("📊 Сохранить диагноз", callback_data="plant_save_new")
+                ],
+                [
+                    InlineKeyboardButton("🔄 Новое фото", callback_data="action_photo"),
+                    InlineKeyboardButton("📚 Главное меню", callback_data="action_menu")
+                ]
+            ]
+            
+            await update.message.reply_text(
+                response,
+                reply_markup=InlineKeyboardMarkup(plant_keyboard),
+                parse_mode="Markdown"
+            )
+            
+        except Exception as e:
+            logger.error(f"Error handling photo: {e}", exc_info=True)
+            await update.message.reply_text(
+                "😔 Произошла ошибка при обработке фотографии.\n"
+                "Пожалуйста, попробуйте еще раз или обратитесь в поддержку."
+            )
     
     async def handle_text(
         self, update: Update, context: ContextTypes.DEFAULT_TYPE
