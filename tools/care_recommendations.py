@@ -4,7 +4,7 @@ import re
 from typing import List, Dict, Optional
 from datetime import datetime
 
-from agents import tool
+from agents import function_tool
 from pydantic import BaseModel, Field
 from openai import AsyncOpenAI
 
