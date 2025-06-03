@@ -8,7 +8,6 @@ from utils.logging_config import setup_logging
 
 def main() -> None:
     """Start the PlantCare Agent application."""
-    # Setup logging
     setup_logging(settings.LOG_LEVEL)
     logger = logging.getLogger(__name__)
     
