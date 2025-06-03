@@ -65,6 +65,10 @@ class ImageProcessor:
             # Convert to RGB if necessary
             if image.mode not in ("RGB", "L"):
                 image = image.convert("RGB")
+                metadata["converted_to_rgb"] = True
+            
+            # Enhance image for better plant detection
+            image = cls._enhance_plant_image(image)
             
             # Resize if too large
             if image.size[0] > cls.MAX_SIZE[0] or image.size[1] > cls.MAX_SIZE[1]:
