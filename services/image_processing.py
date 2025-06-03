@@ -10,6 +10,8 @@ from datetime import datetime
 from PIL import Image, ImageOps, ImageEnhance
 import numpy as np
 
+from config.settings import settings
+
 logger = logging.getLogger(__name__)
 
 
