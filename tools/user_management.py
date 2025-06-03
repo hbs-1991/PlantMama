@@ -17,6 +17,16 @@ from database.models import User, Plant, Session, Message, Diagnosis, Reminder
 logger = logging.getLogger(__name__)
 
 
+class MessageItem(BaseModel):
+    model_config = ConfigDict(extra="forbid")  # строго
+    role: str = Field(description="Role of the message sender (user or assistant)")
+    content: str = Field(description="Message content")
+    has_image: bool = Field(default=False)
+    image_url: Optional[str] = None
+    timestamp: Optional[datetime] = None
+    tokens_used: Optional[int] = None
+
+
 class SessionData(BaseModel):
     """User session data."""
     model_config = ConfigDict(extra="forbid")  # 💥 обязательный параметр
