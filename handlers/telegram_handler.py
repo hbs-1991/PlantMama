@@ -55,7 +55,6 @@ class TelegramBot:
         # Start polling
         await self.application.run_polling()
 
-        
         logger.info("Telegram bot started successfully")
 
     async def stop(self) -> None:
