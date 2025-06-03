@@ -247,7 +247,26 @@ class ImageProcessor:
         """Detect potential plant issues based on visual features."""
         issues = []
         
-        return float(np.sum(green_mask) / green_mask.size)
+        # Check for too much brown (potential disease/dead areas)
+        if features.get("brown_ratio", 0) > 0.3:
+            issues.append("High brown color ratio - possible dead or diseased areas")
+        
+        # Check for low green ratio
+        if features.get("green_ratio", 0) < 0.1:
+            issues.append("Low green color ratio - may not be a healthy plant")
+        
+        # Check brightness issues
+        brightness = features.get("brightness", 128)
+        if brightness < 50:
+            issues.append("Image too dark for accurate analysis")
+        elif brightness > 220:
+            issues.append("Image overexposed - details may be lost")
+        
+        # Check contrast
+        if features.get("contrast", 50) < 20:
+            issues.append("Low contrast - image may be blurry or out of focus")
+        
+        return issues
     
     @classmethod
     async def validate_plant_image(cls, image_data: bytes) -> Tuple[bool, Optional[str]]:
