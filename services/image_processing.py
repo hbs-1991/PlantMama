@@ -200,7 +200,52 @@ class ImageProcessor:
         
         # Extract RGB channels
         r, g, b = img_array[:, :, 0], img_array[:, :, 1], img_array[:, :, 2]
-        green_mask = (g > r * 1.1) & (g > b * 1.1) & (g > 50)
+        
+        # Brown detection: red > green > blue, and not too bright
+        brown_mask = (r > g) & (g > b) & (r > 50) & (r < 180) & (g > 30) & (g < 140)
+        
+        return round(float(np.sum(brown_mask) / brown_mask.size), 3)
+    
+    @staticmethod
+    def _calculate_texture_complexity(img_array: np.ndarray) -> float:
+        """Calculate texture complexity using edge detection."""
+        if len(img_array.shape) == 3:
+            # Convert to grayscale
+            gray = np.mean(img_array, axis=2).astype(np.uint8)
+        else:
+            gray = img_array
+        
+        # Simple edge detection using gradient
+        grad_x = np.abs(np.diff(gray, axis=0))
+        grad_y = np.abs(np.diff(gray, axis=1))
+        
+        # Average gradient magnitude
+        avg_gradient = (np.mean(grad_x) + np.mean(grad_y)) / 2
+        
+        return round(float(avg_gradient), 2)
+    
+    @staticmethod
+    def _detect_leaf_edges(img_array: np.ndarray) -> dict:
+        """Detect potential leaf edges in the image."""
+        if len(img_array.shape) == 3:
+            # Use green channel for leaf detection
+            green = img_array[:, :, 1]
+        else:
+            green = img_array
+        
+        # Simple edge detection
+        edges = np.abs(np.diff(green, axis=0))
+        edge_strength = float(np.mean(edges))
+        
+        return {
+            "edge_strength": round(edge_strength, 2),
+            "has_clear_edges": edge_strength > 20
+        }
+    
+    @staticmethod
+    def _detect_visual_issues(features: dict) -> list:
+        """Detect potential plant issues based on visual features."""
+        issues = []
         
         return float(np.sum(green_mask) / green_mask.size)
     
