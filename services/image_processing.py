@@ -7,7 +7,7 @@ from typing import Tuple, Optional
 from pathlib import Path
 from datetime import datetime
 
-from PIL import Image
+from PIL import Image, ImageOps, ImageEnhance
 import numpy as np
 
 logger = logging.getLogger(__name__)
