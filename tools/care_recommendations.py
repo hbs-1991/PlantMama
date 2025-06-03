@@ -39,6 +39,14 @@ class ToolRecommendation(BaseModel):
     brand: str = Field(description="Рекомендуемый бренд")
     purchase_links: List[str] = Field(description="Где купить (общие магазины, без конкретных URL)")
 
+class DiagnosisInput(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    health_score: float = Field(description="Индекс здоровья растения (1-10)")
+    issues: list[str] = Field(description="Список обнаруженных проблем")
+    severity: str = Field(description="Уровень тяжести: mild, moderate, severe")
+    confidence: float = Field(description="Достоверность диагноза (0-1)")
+    recommendations: list[str] = Field(description="Список рекомендаций по первичным действиям")
+
 
 @function_tool
 async def generate_care_instructions(
