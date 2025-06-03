@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 class DiagnosisResult(BaseModel):
+    model_config = ConfigDict(extra="forbid")  # ❗ обязательно
     health_score: float = Field(description="Индекс здоровья растения (1-10)")
     issues: List[str] = Field(description="Список обнаруженных проблем")
     severity: str = Field(description="Уровень тяжести: mild, moderate, severe")
