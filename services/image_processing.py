@@ -150,17 +150,33 @@ class ImageProcessor:
             return {}
     
     @staticmethod
-    def _get_dominant_colors(img_array: np.ndarray, n_colors: int = 3) -> list:
-        """Get dominant colors from image."""
-        # Simplified version - in production would use k-means clustering
-        if len(img_array.shape) == 3:
-            pixels = img_array.reshape(-1, 3)
-            # Get unique colors and their counts
-            unique, counts = np.unique(pixels, axis=0, return_counts=True)
-            # Sort by frequency
-            idx = np.argsort(-counts)[:n_colors]
-            return [tuple(map(int, unique[i])) for i in idx]
-        return []
+    def _get_dominant_colors(img_array: np.ndarray, n_colors: int = 5) -> list:
+        """Get dominant colors from image using simple quantization."""
+        if len(img_array.shape) != 3:
+            return []
+        
+        # Reshape to list of pixels
+        pixels = img_array.reshape(-1, 3)
+        
+        # Simple color quantization
+        # Reduce color space to 6 bits per channel (64 colors per channel)
+        quantized = (pixels >> 2) << 2
+        
+        # Get unique colors and their counts
+        unique, counts = np.unique(quantized, axis=0, return_counts=True)
+        
+        # Sort by frequency
+        idx = np.argsort(-counts)[:n_colors]
+        
+        # Return as list of RGB tuples with percentages
+        total_pixels = len(pixels)
+        dominant_colors = []
+        for i in idx:
+            color = tuple(map(int, unique[i]))
+            percentage = round(counts[i] / total_pixels * 100, 1)
+            dominant_colors.append({"color": color, "percentage": percentage})
+        
+        return dominant_colors
     
     @staticmethod
     def _calculate_green_ratio(img_array: np.ndarray) -> float:
