@@ -61,7 +61,7 @@ class PlantCareAgent:
         # Создаём агента, передавая в него наш AsyncOpenAI
         self.agent = Agent(
             name="PlantCare Agent",
-            model=self.client,
+            model="gpt-4.1-mini",
             instructions=self.system_prompt,
             tools=tools,
         )
