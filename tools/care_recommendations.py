@@ -37,7 +37,7 @@ class ToolRecommendation(BaseModel):
     purchase_links: List[str] = Field(description="Где купить (общие магазины, без конкретных URL)")
 
 
-@tool
+@function_tool
 async def generate_care_instructions(
     plant_id: str,
     diagnosis: Dict,
