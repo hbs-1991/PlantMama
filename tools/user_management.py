@@ -33,7 +33,7 @@ class SessionData(BaseModel):
     session_id: str = Field(description="Unique session identifier")
     user_id: str = Field(description="User identifier")
     start_time: datetime = Field(description="Session start timestamp")
-    messages: List[dict] = Field(description="List of messages in session")
+    messages: List[MessageItem] = Field(description="List of messages in session")
     plant_ids: List[str] = Field(description="Plants discussed in session")
     tokens_used: int = Field(description="Total tokens used")
 
