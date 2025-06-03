@@ -35,7 +35,7 @@ class PlantInfo(BaseModel):
     watering_schedule: WateringSchedule = Field(description="Структура с расписанием полива")
 
 
-@tool
+@function_tool
 async def get_plant_encyclopedia(plant_name: str) -> PlantInfo:
     """
     Инструмент для получения справочной информации о растении.
