@@ -56,6 +56,12 @@ class ImageProcessor:
                 "file_size": len(image_data),
             }
             
+            # Calculate hash for deduplication
+            metadata["hash"] = hashlib.md5(image_data).hexdigest()
+            
+            # Fix orientation using EXIF data
+            image = ImageOps.exif_transpose(image)
+            
             # Convert to RGB if necessary
             if image.mode not in ("RGB", "L"):
                 image = image.convert("RGB")
