@@ -19,10 +19,10 @@ def main() -> None:
 
         # Initialize Telegram bot
         bot = TelegramBot(agent)
-        
-        # Start the bot
-        await bot.start()
-        
+
+        # Run blocking polling
+        bot.run()
+
     except KeyboardInterrupt:
         logger.info("Shutting down...")
     except Exception as e:
