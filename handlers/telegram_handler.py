@@ -74,6 +74,16 @@ class TelegramBot:
         self.application.add_handler(
             MessageHandler(filters.TEXT & ~filters.COMMAND, self.handle_text)
         )
+        
+        # Voice message handler
+        self.application.add_handler(
+            MessageHandler(filters.VOICE, self.handle_voice)
+        )
+        
+        # Callback query handler for inline keyboards
+        self.application.add_handler(
+            CallbackQueryHandler(self.handle_callback_query)
+        )
     
     async def _set_bot_commands(self) -> None:
         """Set bot commands for the menu."""
