@@ -43,7 +43,7 @@ class PlantRecord(BaseModel):
 
 class ReminderInfo(BaseModel):
     """Reminder information."""
-    
+    model_config = ConfigDict(extra="forbid")  # 💥 обязательный параметр
     reminder_id: str = Field(description="Unique reminder ID")
     reminder_type: str = Field(description="Type of reminder")
     scheduled_time: datetime = Field(description="When reminder is scheduled")
