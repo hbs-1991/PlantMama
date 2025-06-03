@@ -30,7 +30,7 @@ class SessionData(BaseModel):
 
 class PlantRecord(BaseModel):
     """User's plant record."""
-    
+    model_config = ConfigDict(extra="forbid")  # 💥 обязательный параметр
     plant_id: str = Field(description="Unique plant identifier")
     species: str = Field(description="Plant species name")
     nickname: Optional[str] = Field(description="User's nickname for plant")
