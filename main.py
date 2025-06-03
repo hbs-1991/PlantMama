@@ -10,7 +10,7 @@ def main() -> None:
     """Start the PlantCare Agent application."""
     setup_logging(settings.LOG_LEVEL)
     logger = logging.getLogger(__name__)
-    
+
     logger.info("Starting PlantCare Agent...")
     
     try:
