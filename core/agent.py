@@ -90,7 +90,7 @@ class PlantCareAgent:
                     self.agent,
                     input=user_message,
                     context={"user_id": user_id, "image": image_data},
-                    run_config=RunConfig(max_function_calls=3),
+                    run_config=RunConfig(),
                 )
             else:
                 context["has_image"] = False
