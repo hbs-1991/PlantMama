@@ -98,7 +98,7 @@ class PlantCareAgent:
                     self.agent,
                     input=message,
                     context=context,
-                    run_config=RunConfig(max_function_calls=3),
+                    run_config=RunConfig(),
                 )
 
             # Обычно .run возвращает объект с атрибутом .output — конечным текстовым ответом агента.
