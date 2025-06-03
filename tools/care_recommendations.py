@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class CareInstructions(BaseModel):
+    model_config = ConfigDict(extra="forbid")  # 💥 обязательный параметр
     watering: str = Field(description="Рекомендации по поливу")
     lighting: str = Field(description="Рекомендации по освещению")
     soil: str = Field(description="Рекомендации по почве")
