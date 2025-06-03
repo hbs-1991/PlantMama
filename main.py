@@ -2,7 +2,7 @@
 
 import asyncio
 import logging
-
+import asyncio
 from config.settings import settings
 from core.agent import PlantCareAgent
 from handlers.telegram_handler import TelegramBot
