@@ -36,7 +36,6 @@ class PlantIdentification(BaseModel):
 @function_tool
 async def diagnose_plant_photo(
     image_data: bytes,
-    user_context: Optional[Dict] = None,
 ) -> DiagnosisResult:
     """
     Инструмент для диагностики растения по загруженной фотографии.
