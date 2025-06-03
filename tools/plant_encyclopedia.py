@@ -21,6 +21,7 @@ class WateringSchedule(BaseModel):
 
 
 class PlantInfo(BaseModel):
+    model_config = ConfigDict(extra="forbid")  # 💥 обязательный параметр
     common_name: str = Field(description="Распространенное название растения")
     scientific_name: str = Field(description="Латинское название растения")
     family: str = Field(description="Ботаническое семейство")
