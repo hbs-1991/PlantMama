@@ -29,7 +29,8 @@ class PlantIdentification(BaseModel):
     common_name: str = Field(description="Распространенное название")
     scientific_name: str = Field(description="Научное латинское название")
     confidence: float = Field(description="Достоверность идентификации (0-1)")
-    alternatives: List[str] = Field(description="Альтернативные варианты вида")
+    alternatives: list[str] = Field(description="Альтернативные варианты вида")
+
 
 
 @function_tool
