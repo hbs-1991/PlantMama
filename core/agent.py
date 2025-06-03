@@ -1,7 +1,7 @@
 import logging
 from typing import Optional
 
-from agents import Agent, RunConfig
+from agents import Agent, RunConfig, Runner
 from openai import AsyncOpenAI
 
 from config.settings import settings
