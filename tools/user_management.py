@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 class SessionData(BaseModel):
     """User session data."""
-    
+    model_config = ConfigDict(extra="forbid")  # 💥 обязательный параметр
     session_id: str = Field(description="Unique session identifier")
     user_id: str = Field(description="User identifier")
     start_time: datetime = Field(description="Session start timestamp")
