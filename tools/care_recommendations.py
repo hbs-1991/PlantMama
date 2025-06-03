@@ -184,7 +184,7 @@ async def recommend_fertilizers(
         ]
 
 
-@tool
+@function_tool
 async def recommend_tools(care_task: str, plant_size: str) -> List[ToolRecommendation]:
     """
     Инструмент для подбора инструментов для ухода. LLM возвращает строго JSON-массив:
