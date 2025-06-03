@@ -32,10 +32,7 @@ logger = logging.getLogger(__name__)
 
 class PlantCareAgent:
     def __init__(self):
-        self.api_key = settings.OPENAI_API_KEY
-        self.client = AsyncOpenAI(api_key=self.api_key)
-
-        # Системное описание бота (на русском)
+                # Системное описание бота (на русском)
         self.system_prompt = (
             "Ты — PlantMama AI, виртуальный помощник по уходу за растениями. "
             "Отвечай на все вопросы пользователя на русском языке.\n"
