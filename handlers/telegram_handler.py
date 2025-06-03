@@ -53,9 +53,8 @@ class TelegramBot:
         await self._set_bot_commands()
         
         # Start polling
-        await self.application.initialize()
-        await self.application.start()
-        await self.application.updater.start_polling()
+        await self.application.run_polling()
+
         
         logger.info("Telegram bot started successfully")
     
@@ -168,35 +167,35 @@ class TelegramBot:
         )
         
         await update.message.reply_text(response)
-    
+
     async def handle_voice(
         self, update: Update, context: ContextTypes.DEFAULT_TYPE
     ) -> None:
         """Handle voice messages."""
         user_id = str(update.effective_user.id)
-        
+
         try:
             # Send typing indicator
             await update.message.chat.send_action("typing")
-            
+
             # Download voice file
             voice_file = await update.message.voice.get_file()
             voice_bytes = await voice_file.download_as_bytearray()
-            
+
             # Convert voice to text (placeholder - in production use OpenAI Whisper)
             text = "Извините, обработка голосовых сообщений временно недоступна. Пожалуйста, отправьте текстовое сообщение или фото растения."
-            
+
             # For now, inform user about the limitation
             await update.message.reply_text(
                 "🎤 Голосовое сообщение получено.\n\n" + text
             )
-            
+
         except Exception as e:
             logger.error(f"Error processing voice message: {e}")
             await update.message.reply_text(
                 "Произошла ошибка при обработке голосового сообщения. Попробуйте еще раз."
             )
-    
+
     def _get_main_keyboard(self) -> InlineKeyboardMarkup:
         """Get main inline keyboard."""
         keyboard = [
