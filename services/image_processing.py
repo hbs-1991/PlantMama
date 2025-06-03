@@ -20,6 +20,7 @@ class ImageProcessor:
     
     MAX_SIZE = (1024, 1024)  # Maximum image dimensions
     ALLOWED_FORMATS = {"JPEG", "PNG", "JPG", "WEBP"}
+    MIN_SIZE = (100, 100)  # Minimum acceptable image size
     
     @classmethod
     async def process_image(cls, image_data: bytes) -> Tuple[bytes, dict]:
