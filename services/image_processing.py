@@ -184,7 +184,21 @@ class ImageProcessor:
         if len(img_array.shape) != 3 or img_array.shape[2] != 3:
             return 0.0
         
-        # Simple green detection
+        # Extract RGB channels
+        r, g, b = img_array[:, :, 0], img_array[:, :, 1], img_array[:, :, 2]
+        
+        # Green detection: green channel is significantly higher than red and blue
+        green_mask = (g > r * 1.2) & (g > b * 1.2) & (g > 40) & (g < 250)
+        
+        return round(float(np.sum(green_mask) / green_mask.size), 3)
+    
+    @staticmethod
+    def _calculate_brown_ratio(img_array: np.ndarray) -> float:
+        """Calculate the ratio of brown pixels (potential dead/diseased areas)."""
+        if len(img_array.shape) != 3 or img_array.shape[2] != 3:
+            return 0.0
+        
+        # Extract RGB channels
         r, g, b = img_array[:, :, 0], img_array[:, :, 1], img_array[:, :, 2]
         green_mask = (g > r * 1.1) & (g > b * 1.1) & (g > 50)
         
