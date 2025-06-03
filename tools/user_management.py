@@ -200,7 +200,7 @@ async def schedule_reminder(
                 # Create user if doesn't exist
                 user = User(
                     telegram_id=user_id,
-                    created_at=datetime.utcnow()
+                    created_at=datetime.datetime.now(datetime.UTC)
                 )
                 db.add(user)
                 await db.flush()
