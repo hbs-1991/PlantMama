@@ -7,7 +7,7 @@ import json
 from typing import Dict, Optional, List
 
 from agents import function_tool
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from openai import AsyncOpenAI
 
 from config.settings import settings
