@@ -166,7 +166,7 @@ async def recommend_fertilizers(
         logger.info(f"Raw fertilizer recommendations response: {fert_text}")
 
         data = json.loads(fert_text)
-        result = [FertilizerRecommendation.parse_obj(item) for item in data]
+        result = [FertilizerRecommendation.model_validate(item) for item in data]
         return result
 
     except Exception as exc:
