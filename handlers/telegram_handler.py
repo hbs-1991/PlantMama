@@ -66,7 +66,7 @@ class TelegramBot:
             await self.application.shutdown()
 
         logger.info("Telegram bot stopped")
-    
+
     def _register_handlers(self) -> None:
         """Register command and message handlers."""
         self.application.add_handler(CommandHandler("start", self.handle_start))
