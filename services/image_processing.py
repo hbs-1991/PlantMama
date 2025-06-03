@@ -281,7 +281,7 @@ class ImageProcessor:
         """
         try:
             # Process image first
-            _, metadata = await cls.process_image(image_data)
+            processed_data, metadata = await cls.process_image(image_data)
             
             # Extract features
             features = await cls.extract_plant_features(image_data)
