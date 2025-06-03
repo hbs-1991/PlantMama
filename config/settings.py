@@ -37,7 +37,7 @@ class Settings(BaseSettings):
     TELEGRAM_WEBHOOK_URL: Optional[str] = Field(default=None)
     
     # Database
-    DATABASE_URL: str = Field(default="postgresql://user:password@localhost:5432/plantcare")
+    DATABASE_URL: str = Field(default="postgresql://user:password@localhost:5432/plantmama")
     DATABASE_POOL_SIZE: int = Field(default=5)
     DATABASE_MAX_OVERFLOW: int = Field(default=10)
     
