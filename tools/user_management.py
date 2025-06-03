@@ -214,7 +214,7 @@ async def schedule_reminder(
                 description=description or f"Time to {reminder_type} your plant!",
                 scheduled_at=scheduled_time,
                 status="pending",
-                created_at=datetime.utcnow()
+                created_at=datetime.datetime.now(datetime.UTC)
             )
             db.add(reminder)
             await db.commit()
