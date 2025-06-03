@@ -21,6 +21,7 @@ class CareInstructions(BaseModel):
 
 
 class FertilizerRecommendation(BaseModel):
+    model_config = ConfigDict(extra="forbid")  # 💥 обязательный параметр
     name: str = Field(description="Название удобрения")
     npk_ratio: str = Field(description="Соотношение NPK")
     frequency: str = Field(description="Как часто применять")
