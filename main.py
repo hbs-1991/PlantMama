@@ -16,7 +16,7 @@ def main() -> None:
     try:
         # Initialize agent
         agent = PlantCareAgent()
-        
+
         # Initialize Telegram bot
         bot = TelegramBot(agent)
         
