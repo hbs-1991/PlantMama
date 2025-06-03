@@ -2,6 +2,7 @@
 
 import logging
 from typing import Optional
+import speech_recognition as sr
 
 from telegram import (
     Update, 
