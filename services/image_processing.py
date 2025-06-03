@@ -122,7 +122,11 @@ class ImageProcessor:
         try:
             image = Image.open(io.BytesIO(image_data))
             
-            # Convert to a numpy array
+            # Convert to RGB for consistent analysis
+            if image.mode != "RGB":
+                image = image.convert("RGB")
+            
+            # Convert to numpy array
             img_array = np.array(image)
             
             # Basic feature extraction
