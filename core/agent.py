@@ -20,6 +20,12 @@ from tools.user_management import (
     get_user_plant_history,
     schedule_reminder,
 )
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
 logger = logging.getLogger(__name__)
 
