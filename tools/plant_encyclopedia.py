@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class WateringSchedule(BaseModel):
+    model_config = ConfigDict(extra="forbid")  # 💥 обязательный параметр
     frequency_days: int = Field(description="Интервал полива (в днях)")
     amount_ml: int = Field(description="Количество воды (в мл)")
     indicators: List[str] = Field(description="Признаки, указывающие на необходимость полива")
