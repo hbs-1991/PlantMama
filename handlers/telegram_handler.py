@@ -57,7 +57,7 @@ class TelegramBot:
 
         
         logger.info("Telegram bot started successfully")
-    
+
     async def stop(self) -> None:
         """Stop the Telegram bot."""
         if self.application:
