@@ -12,7 +12,7 @@ def main() -> None:
     logger = logging.getLogger(__name__)
 
     logger.info("Starting PlantCare Agent...")
-    
+
     try:
         # Initialize agent
         agent = PlantCareAgent()
