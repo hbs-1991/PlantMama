@@ -135,6 +135,9 @@ class ImageProcessor:
                 "brightness": float(np.mean(img_array)),
                 "contrast": float(np.std(img_array)),
                 "green_ratio": cls._calculate_green_ratio(img_array),
+                "brown_ratio": cls._calculate_brown_ratio(img_array),
+                "texture_complexity": cls._calculate_texture_complexity(img_array),
+                "leaf_edge_detection": cls._detect_leaf_edges(img_array),
             }
             
             return features
