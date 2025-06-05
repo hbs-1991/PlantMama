@@ -31,12 +31,18 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except RuntimeError as e:
-        if "event loop is already running" in str(e):
-            loop = asyncio.get_event_loop()
-            loop.create_task(main())
-            loop.run_forever()
-        else:
-            raise
+    main()
+
+
+# Extend TelegramBot with run() method for blocking polling
+setattr(TelegramBot, "run", lambda self: asyncio.run(self._run_polling()))
+
+# Define the internal async method _run_polling
+async def _run_polling(self):
+    from telegram.ext import Application
+    self.application = Application.builder().token(self.token).build()
+    self._register_handlers()
+    await self._set_bot_commands()
+    await self.application.run_polling()
+
+setattr(TelegramBot, "_run_polling", _run_polling)
