@@ -21,7 +21,7 @@ def main() -> None:
         bot = TelegramBot(agent)
 
         # Run blocking polling
-        bot.run()
+        bot.start()
 
     except KeyboardInterrupt:
         logger.info("Shutting down...")
